@@ -1,0 +1,24 @@
+@import "~bootstrap/scss/bootstrap";
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins";
+@import "bootstrap/scss/utilities";
+
+$custom-colors: map-merge(
+	$theme-colors,
+	(
+		"purple": #5d0ff3,
+		"orange": #f2a82a,
+	)
+);
+
+$theme-colors: map-merge($theme-colors, $custom-colors);
+$theme-colors-rgb: map-loop($theme-colors, to-rgb, "$value");
+$utilities-colors: map-merge($utilities-colors, $theme-colors-rgb);
+$utilities-text-colors: map-loop(
+	$utilities-colors,
+	rgba-css-var,
+	"$key",
+	"text"
+);
+$utilities-bg-colors: map-loop($utilities-colors, rgba-css-var, "$key", "bg");

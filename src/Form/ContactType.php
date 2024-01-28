@@ -30,7 +30,7 @@ class ContactType extends AbstractType
             ->add('message', TextareaType::class)
             ->add('submit_contact', SubmitType::class, [
                 'label' => 'Envoyer',
-                'attr' => ['class' => ' btn btn-outline-secondary border border-secondary rounded-pill']
+                'attr' => ['class' => ' btn btn-outline-secondary border border-secondary rounded']
             ])
             ->add('captcha', Recaptcha3Type::class, [
                 'constraints' => new Recaptcha3(),
