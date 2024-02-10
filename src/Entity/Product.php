@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProductRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -32,8 +34,14 @@ class Product
     #[ORM\Column(length: 255)]
     private ?string $prezPicture = null;
 
-    #[ORM\ManyToOne(inversedBy: 'products')]
-    private ?ProductSize $size = null;
+    #[ORM\ManyToMany(targetEntity: ProductSize::class, inversedBy: 'products')]
+    private Collection $size;
+
+    public function __construct()
+    {
+        $this->size = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -112,14 +120,26 @@ class Product
         return $this;
     }
 
-    public function getSize(): ?ProductSize
+    /**
+     * @return Collection<int, ProductSize>
+     */
+    public function getSize(): Collection
     {
         return $this->size;
     }
 
-    public function setSize(?ProductSize $size): static
+    public function addSize(ProductSize $size): static
     {
-        $this->size = $size;
+        if (!$this->size->contains($size)) {
+            $this->size->add($size);
+        }
+
+        return $this;
+    }
+
+    public function removeSize(ProductSize $size): static
+    {
+        $this->size->removeElement($size);
 
         return $this;
     }

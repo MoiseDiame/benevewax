@@ -15,93 +15,49 @@ class ProductSize
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToMany(mappedBy: 'productSize', targetEntity: VesteSize::class)]
-    private Collection $vesteSize;
-
-    #[ORM\OneToMany(mappedBy: 'productSize', targetEntity: ShoeSize::class)]
-    private Collection $shoeSize;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $size = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    private ?string $category = null;
 
-    #[ORM\OneToMany(mappedBy: 'size', targetEntity: Product::class)]
+    #[ORM\ManyToMany(targetEntity: Product::class, mappedBy: 'size')]
     private Collection $products;
 
     public function __construct()
     {
-        $this->vesteSize = new ArrayCollection();
-        $this->shoeSize = new ArrayCollection();
         $this->products = new ArrayCollection();
     }
 
-    /**
-     * @return Collection<int, VesteSize>
-     */
-    public function getVesteSize(): Collection
+    // public function __toString()
+    // {
+    //     return $this->size;
+    // }
+    public function getId(): ?int
     {
-        return $this->vesteSize;
+        return $this->id;
     }
 
-    public function addVesteSize(VesteSize $vesteSize): static
+    public function getSize(): ?string
     {
-        if (!$this->vesteSize->contains($vesteSize)) {
-            $this->vesteSize->add($vesteSize);
-            $vesteSize->setProductSize($this);
-        }
+        return $this->size;
+    }
+
+    public function setSize(?string $size): static
+    {
+        $this->size = $size;
 
         return $this;
     }
 
-    public function removeVesteSize(VesteSize $vesteSize): static
+    public function getCategory(): ?string
     {
-        if ($this->vesteSize->removeElement($vesteSize)) {
-            // set the owning side to null (unless already changed)
-            if ($vesteSize->getProductSize() === $this) {
-                $vesteSize->setProductSize(null);
-            }
-        }
-
-        return $this;
+        return $this->category;
     }
 
-    /**
-     * @return Collection<int, ShoeSize>
-     */
-    public function getShoeSize(): Collection
+    public function setCategory(string $category): static
     {
-        return $this->shoeSize;
-    }
-
-    public function addShoeSize(ShoeSize $shoeSize): static
-    {
-        if (!$this->shoeSize->contains($shoeSize)) {
-            $this->shoeSize->add($shoeSize);
-            $shoeSize->setProductSize($this);
-        }
-
-        return $this;
-    }
-
-    public function removeShoeSize(ShoeSize $shoeSize): static
-    {
-        if ($this->shoeSize->removeElement($shoeSize)) {
-            // set the owning side to null (unless already changed)
-            if ($shoeSize->getProductSize() === $this) {
-                $shoeSize->setProductSize(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): static
-    {
-        $this->name = $name;
+        $this->category = $category;
 
         return $this;
     }
@@ -118,7 +74,7 @@ class ProductSize
     {
         if (!$this->products->contains($product)) {
             $this->products->add($product);
-            $product->setSize($this);
+            $product->addSize($this);
         }
 
         return $this;
@@ -127,10 +83,7 @@ class ProductSize
     public function removeProduct(Product $product): static
     {
         if ($this->products->removeElement($product)) {
-            // set the owning side to null (unless already changed)
-            if ($product->getSize() === $this) {
-                $product->setSize(null);
-            }
+            $product->removeSize($this);
         }
 
         return $this;
