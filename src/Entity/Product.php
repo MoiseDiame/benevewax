@@ -37,9 +37,26 @@ class Product
     #[ORM\ManyToMany(targetEntity: ProductSize::class, inversedBy: 'products')]
     private Collection $size;
 
+    #[ORM\ManyToOne(inversedBy: 'products')]
+    private ?ShopCategory $shopCategory = null;
+
+    #[ORM\ManyToMany(targetEntity: self::class, inversedBy: 'ensembleProducts')]
+    private Collection $ensemble;
+
+    #[ORM\ManyToMany(targetEntity: self::class, mappedBy: 'ensemble')]
+    private Collection $ensembleProducts;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $assortiment = null;
+
+    #[ORM\ManyToOne(inversedBy: 'products')]
+    private ?ProductCategory $productCategory = null;
+
     public function __construct()
     {
         $this->size = new ArrayCollection();
+        $this->ensemble = new ArrayCollection();
+        $this->ensembleProducts = new ArrayCollection();
     }
 
 
@@ -140,6 +157,93 @@ class Product
     public function removeSize(ProductSize $size): static
     {
         $this->size->removeElement($size);
+
+        return $this;
+    }
+
+    public function getShopCategory(): ?ShopCategory
+    {
+        return $this->shopCategory;
+    }
+
+    public function setShopCategory(?ShopCategory $shopCategory): static
+    {
+        $this->shopCategory = $shopCategory;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, self>
+     */
+    public function getEnsemble(): Collection
+    {
+        return $this->ensemble;
+    }
+
+    public function addEnsemble(self $ensemble): static
+    {
+        if (!$this->ensemble->contains($ensemble)) {
+            $this->ensemble->add($ensemble);
+        }
+
+        return $this;
+    }
+
+    public function removeEnsemble(self $ensemble): static
+    {
+        $this->ensemble->removeElement($ensemble);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, self>
+     */
+    public function getEnsembleProducts(): Collection
+    {
+        return $this->ensembleProducts;
+    }
+
+    public function addEnsembleProduct(self $ensembleProduct): static
+    {
+        if (!$this->ensembleProducts->contains($ensembleProduct)) {
+            $this->ensembleProducts->add($ensembleProduct);
+            $ensembleProduct->addEnsemble($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEnsembleProduct(self $ensembleProduct): static
+    {
+        if ($this->ensembleProducts->removeElement($ensembleProduct)) {
+            $ensembleProduct->removeEnsemble($this);
+        }
+
+        return $this;
+    }
+
+    public function isAssortiment(): ?bool
+    {
+        return $this->assortiment;
+    }
+
+    public function setAssortiment(?bool $assortiment): static
+    {
+        $this->assortiment = $assortiment;
+
+        return $this;
+    }
+
+    public function getProductCategory(): ?ProductCategory
+    {
+        return $this->productCategory;
+    }
+
+    public function setProductCategory(?ProductCategory $productCategory): static
+    {
+        $this->productCategory = $productCategory;
 
         return $this;
     }

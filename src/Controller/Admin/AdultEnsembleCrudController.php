@@ -3,11 +3,8 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Product;
-use App\Repository\ProductCategoryRepository;
 use Doctrine\ORM\QueryBuilder;
-use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Repository\ProductSizeRepository;
 use App\Repository\ShopCategoryRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
@@ -24,19 +21,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
-class AdultShoesCrudController extends AbstractCrudController
+class AdultEnsembleCrudController extends AbstractCrudController
 {
-    public function __construct(
-        private ProductRepository $productRepository,
-        private ProductSizeRepository $productSizeRepository,
-        private EntityManagerInterface $entityManager,
-        private ShopCategoryRepository $shopCategoryRepository,
-        private EntityRepository $entityRepository,
-        private ProductCategoryRepository $productCategoryRepository
-
-
-    ) {
-    }
     public static function getEntityFqcn(): string
     {
         return Product::class;
@@ -44,6 +30,12 @@ class AdultShoesCrudController extends AbstractCrudController
 
     public const BASE_PATH = 'uploads/ProductPictures';
     public const UPLOAD_DIR = 'public/uploads/ProductPictures';
+
+    public function __construct(
+        private ShopCategoryRepository $shopCategoryRepository,
+        private EntityRepository $entityRepository
+    ) {
+    }
 
 
     public function configureFields(string $pageName): iterable
@@ -58,12 +50,12 @@ class AdultShoesCrudController extends AbstractCrudController
                 ->setTargetFieldName('name')
                 ->hideOnIndex()
                 ->hideOnDetail(),
-            AssociationField::new('size')
-                ->setFormTypeOption('choice_label', 'size')
+            AssociationField::new('ensemble')
+                ->setFormTypeOption('choice_label', 'name')
                 ->setFormTypeOption('by_reference', false)
                 ->setQueryBuilder(function (QueryBuilder $queryBuilder) {
-                    $queryBuilder->andWhere('entity.category = :category')
-                        ->setParameter('category', 'adultShoe');
+                    $queryBuilder->where('entity.shopCategory = :category')
+                        ->setParameter('category', $this->shopCategoryRepository->findOneByName('adults'));
                 }),
             MoneyField::new('price')->setCurrency('EUR')->setRequired(true),
             BooleanField::new('available'),
@@ -76,15 +68,17 @@ class AdultShoesCrudController extends AbstractCrudController
         ];
     }
 
+
     public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
     {
         parent::createIndexQueryBuilder($searchDto, $entityDto, $fields, $filters);
 
-        $productCategory = $this->productCategoryRepository->findOneByName('adultShoe');
+        $shopCategory = $this->shopCategoryRepository->findOneByName('adults');
 
         $response = $this->entityRepository->createQueryBuilder($searchDto, $entityDto, $fields, $filters)
-            ->where('entity.productCategory = :adults')
-            ->setParameter('adults', $productCategory);
+            ->where('entity.assortiment = :ensemble')
+            ->andWhere('entity.shopCategory = :adults')
+            ->setParameters(['ensemble' => true, 'adults' => $shopCategory]);
 
         return $response;
     }
@@ -93,12 +87,9 @@ class AdultShoesCrudController extends AbstractCrudController
     {
         if (!$entityInstance instanceof Product) return;
         $shopCategory = $this->shopCategoryRepository->findOneByName('adults');
-        $productCategory = $this->productCategoryRepository->findOneByName('adultShoe');
 
         $entityInstance->setShopCategory($shopCategory)
-            ->setAssortiment(false)
-            ->setProductCategory($productCategory);
-
+            ->setAssortiment(true);
         parent::persistEntity($entityManager, $entityInstance);
     }
 }

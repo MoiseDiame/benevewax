@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+
+	<div class="container">
+		{% for article in articles %}
+			{{article.price}}</div>
+
+	{% endfor %}
+{% endblock %}

@@ -3,19 +3,26 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Product;
-use App\Repository\ProductRepository;
-use App\Repository\ProductSizeRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\ProductCategoryRepository;
 use Doctrine\ORM\QueryBuilder;
-use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use App\Repository\ProductRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\ProductSizeRepository;
+use App\Repository\ShopCategoryRepository;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\SlugField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\SlugField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
+use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
+use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
 class KidShoesCrudController extends AbstractCrudController
 {
@@ -23,7 +30,11 @@ class KidShoesCrudController extends AbstractCrudController
     public function __construct(
         private ProductRepository $productRepository,
         private ProductSizeRepository $productSizeRepository,
-        private EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
+        private ShopCategoryRepository $shopCategoryRepository,
+        private EntityRepository $entityRepository,
+        private ProductCategoryRepository $productCategoryRepository
+
     ) {
     }
     public static function getEntityFqcn(): string
@@ -63,5 +74,31 @@ class KidShoesCrudController extends AbstractCrudController
                 ->setRequired(false),
 
         ];
+    }
+
+    public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
+    {
+        parent::createIndexQueryBuilder($searchDto, $entityDto, $fields, $filters);
+
+        $productCategory = $this->productCategoryRepository->findOneByName('kidShoe');
+
+        $response = $this->entityRepository->createQueryBuilder($searchDto, $entityDto, $fields, $filters)
+            ->where('entity.productCategory = :kids')
+            ->setParameter('kids', $productCategory);
+
+        return $response;
+    }
+
+    public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        if (!$entityInstance instanceof Product) return;
+        $shopCategory = $this->shopCategoryRepository->findOneByName('kids');
+        $productCategory = $this->productCategoryRepository->findOneByName('kidShoe');
+
+        $entityInstance->setShopCategory($shopCategory)
+            ->setAssortiment(false)
+            ->setProductCategory($productCategory);
+
+        parent::persistEntity($entityManager, $entityInstance);
     }
 }
