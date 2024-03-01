@@ -52,6 +52,15 @@ class Product
     #[ORM\ManyToOne(inversedBy: 'products')]
     private ?ProductCategory $productCategory = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $otherPic1 = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $otherPic2 = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $otherPic3 = null;
+
     public function __construct()
     {
         $this->size = new ArrayCollection();
@@ -244,6 +253,42 @@ class Product
     public function setProductCategory(?ProductCategory $productCategory): static
     {
         $this->productCategory = $productCategory;
+
+        return $this;
+    }
+
+    public function getOtherPic1(): ?string
+    {
+        return $this->otherPic1;
+    }
+
+    public function setOtherPic1(?string $otherPic1): static
+    {
+        $this->otherPic1 = $otherPic1;
+
+        return $this;
+    }
+
+    public function getOtherPic2(): ?string
+    {
+        return $this->otherPic2;
+    }
+
+    public function setOtherPic2(?string $otherPic2): static
+    {
+        $this->otherPic2 = $otherPic2;
+
+        return $this;
+    }
+
+    public function getOtherPic3(): ?string
+    {
+        return $this->otherPic3;
+    }
+
+    public function setOtherPic3(?string $otherPic3): static
+    {
+        $this->otherPic3 = $otherPic3;
 
         return $this;
     }

@@ -17,14 +17,16 @@ class CartManager
     }
 
 
-    public function add($id)
+    public function add($id, $size)
     {
+
         $cart = $this->session->get('cart', []);
 
-        if (!empty($cart[$id])) {
-            $cart[$id]++;
+        if (!empty($cart[$id . $size])) {
+            $cart[$id . '-' . $size]++;
         } else {
-            $cart[$id] = 1;
+
+            $cart[$id . '-' .  $size] = 1;
         }
 
         $this->session->set('cart', $cart);
@@ -67,21 +69,63 @@ class CartManager
         return $this->session->set('cart', $cart);
     }
 
+    public function increase($id)
+    {
+        $cart = $this->session->get('cart', []);
+
+        if ($cart[$id]) {
+            $cart[$id]++;
+        } else {
+            return;
+        }
+        return $this->session->set('cart', $cart);
+    }
+
+
 
 
     /***
-     *  Cette fonction permet de connaitre le montant total des achats du client 
-     * ( uniquement les produits. Les frais de port ne sont pas encore pris en compte)
+     *  Cette fonction permet de connaitre le nombre d'articles dans le panier
      */
-    public function getTotalPrice()
+    public function getTotalItems()
     {
         $cart = $this->session->get('cart', []);
-        $total_price = 0;
+        $totalItems = 0;
         if ($cart) {
-
             foreach ($cart as $id => $quantity) {
+
+                $totalItems += $quantity;
             }
         }
-        return $total_price;
+        return $totalItems;
+    }
+
+    public function getFullCart()
+    {
+
+        $cart = $this->session->get('cart');
+        $fullCart = [];
+
+        if ($cart) {
+            foreach ($cart as $id => $quantity) {
+
+                $infos = explode('-', $id);
+                $productId = $infos[0];
+                $product = $this->productRepository->findOneById($productId);
+                if ($product) {
+                    $fullCart[] = [
+                        'product' => $product,
+                        'quantity' => $quantity,
+                        'price' => $product->getPrice(),
+                        'size' => $infos[1],
+                        'sessionId' => $id
+                    ];
+                } else {
+                    $this->delete($id);
+                    continue;
+                }
+            }
+        }
+        return $fullCart;
     }
 }

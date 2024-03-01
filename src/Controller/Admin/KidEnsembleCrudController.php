@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Product;
+use App\Repository\ProductCategoryRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\ShopCategoryRepository;
@@ -34,7 +35,8 @@ class KidEnsembleCrudController extends AbstractCrudController
 
     public function __construct(
         private ShopCategoryRepository $shopCategoryRepository,
-        private EntityRepository $entityRepository
+        private EntityRepository $entityRepository,
+        private ProductCategoryRepository $productCategoryRepository
     ) {
     }
 
@@ -88,9 +90,11 @@ class KidEnsembleCrudController extends AbstractCrudController
     {
         if (!$entityInstance instanceof Product) return;
         $shopCategory = $this->shopCategoryRepository->findOneByName('kids');
+        $productCategory = $this->productCategoryRepository->findOneByName('kidEnsemble');
 
         $entityInstance->setShopCategory($shopCategory)
-            ->setAssortiment(true);
+            ->setAssortiment(true)
+            ->setProductCategory($productCategory);
         parent::persistEntity($entityManager, $entityInstance);
     }
 }

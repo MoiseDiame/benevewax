@@ -1,0 +1,39 @@
+{% apply inline_css %}
+
+<style>
+	.container {
+		background-color: #EAE4E3;
+		padding: auto
+	}
+	.p {
+		font-size: 20px;
+		font-family: sans-serif;
+	}
+	.h3 {
+		color: #E053CF
+	}
+	.a {
+		text-decoration: none;
+	}
+</style>
+
+<div class="header">
+	<a href="{{url('home')}}"><img src="{{email.image('@images/logo_cut.JPG')}}" alt="logo" height="80px"></a>
+</div>
+<p>
+	{{message|raw}}</p>
+
+<div class="container">
+	<h5>
+		Suivez-nous sur nos réseaux
+	</h5>
+	<p>
+		<a href="https://www.instagram.com/bewax003/">
+			<img src="{{email.image('@images/instagram-96.png')}}" alt="logo" height="40px">
+		</a>
+		<a href="https://www.facebook.com/BEWAX003">
+			<img src="{{email.image('@images/facebook-96.png')}}" alt="logo" height="40px">
+		</a>
+	</p>
+</div>
+{% endapply %}

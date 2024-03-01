@@ -1,24 +1,31 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ShopController!
+{% block title %}B&E Wax-Boutique
 {% endblock %}
 
 {% block body %}
-
-	<div class="example-wrapper">
-
-		This friendly message is coming from:
-		<ul>
-			<li>Your controller at
-				<code>
-					<a href="{{ '/home/moise/Documents/Clients/BeneveWax/benevewaxwebsite/src/Controller/ShopController.php'|file_link(0) }}">src/Controller/ShopController.php</a>
-				</code>
-			</li>
-			<li>Your template at
-				<code>
-					<a href="{{ '/home/moise/Documents/Clients/BeneveWax/benevewaxwebsite/templates/shop/index.html.twig'|file_link(0) }}">templates/shop/index.html.twig</a>
-				</code>
-			</li>
-		</ul>
+	<div class="row row-cols-1 row-cols-md-2 justify-content-center">
+		<div class="col">
+			<a href="{{path ('app_shop_kids', {category:'kidShoe'})}}" class="text-decoration-none">
+				<div class="card h-100 border border-0 ms-2">
+					<img src="{{asset ('/Images/kidShop.jpg')}}" class="card-img-top" alt="...">
+					<div class="card-body">
+						<h5 class="card-title text-center">Espace Enfants</h5>
+						<p class="card-text text-center">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+					</div>
+				</div>
+			</a>
+		</div>
+		<div class="col">
+			<a href="{{path ('app_shop_kids', {category:'adultShoe'})}}" class="text-decoration-none">
+				<div class="card h-100 border border-0 me-2">
+					<img src="{{asset ('/Images/adultShop.jpg')}}" class="card-img-top" alt="...">
+					<div class="card-body">
+						<h5 class="card-title text-center">Boutique Adultes</h5>
+						<p class="card-text text-center">This card has supporting text below as a natural lead-in to additional content.</p>
+					</div>
+				</div>
+			</div>
+		</a>
 	</div>
 {% endblock %}

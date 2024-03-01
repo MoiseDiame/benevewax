@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+
+	<div class="card mb-3">
+		<div class="card-img-top">
+			{% include 'shop/_detailCarousel.html.twig' %}</div>
+		<div class="card-body">
+			<h5 class="card-title">{{article.name}}</h5>
+			<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+			<p class="card-text">
+				<form action="{{path ('add_to_cart',{id:article.id} )}}" method="post" id="selectSizeForm">
+					<select class="form-select" aria-label="selectSize" id="selectSize" name="selectedSize" required>
+						<option selected>Choisissez une taille</option>
+						{% for size in article.size %}
+							<option value="{{size.size}}">{{size.size}}</option>
+
+						{% endfor %}
+					</select>
+				</form>
+			</p>
+		</div>
+		<div class="card-footer">
+			<button class="btn rounded btn-warning" type="submit" form="selectSizeForm">Ajouter au panier</button>
+		</div>
+	</div>
+	{{dump(article)}}
+
+
+{% endblock %}

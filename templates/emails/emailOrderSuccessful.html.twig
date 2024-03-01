@@ -1,0 +1,102 @@
+{% apply inline_css %}
+
+<style>
+	.container {
+		background-color: #EAE4E3;
+		padding: auto
+	}
+	.p {
+		font-size: 22px;
+		font-family: sans-serif;
+	}
+	.h4 {
+		text-align: center;
+	}
+	.h5 {
+		text-align: center;
+	}
+
+	.a {
+		text-decoration: none;
+	}
+	td {
+		text-align: center;
+	}
+	tr {
+		text-align: center;
+
+	}
+	.recap {
+		font-weight: bold;
+	}
+</style>
+
+<div class="header">
+	<a href="{{url('home')}}"><img src="{{email.image('@images/logo_cut.JPG.png')}}" alt="logo" height="80px"></a>
+</div>
+<div>
+	<p>
+		{{message|raw}}</p>
+</div>
+<div>
+	<div>
+		<h4>Récapitulatif</h4>
+	</div>
+	<p>Client :
+		{{order.user.fullname}}</p>
+	<p>Adresse de livraison :
+		{{order.delivery}}</p>
+
+</div>
+<div class="orderRecap">
+	<div>
+		<h5>Détails de la commande</h5>
+	</div>
+	<table>
+		<thead>
+			<tr>
+				<th>Quantité</th>
+				<th>Référence</th>
+				<th>Prix Unitaire</th>
+				<th>Total</th>
+
+			</tr>
+		</thead>
+		<tbody>
+
+			{% for detail in orderDetails %}
+				<tr>
+					<td>{{detail.quantity}}</td>
+					<td>{{detail.product}}</td>
+					<td>{{(detail.price/100)|number_format(2,'.',',')}}€</td>
+					<td>{{(detail.total /100)|number_format(2,'.',',')}}€</td>
+				</tr>
+
+			{% endfor %}
+		</tbody>
+	</table>
+	<p>Total des produits :
+		<span class="recap">{{(order.productsPrice /100)|number_format(2, '.', ',')}}€</span>
+	</p>
+	<p>Frais de port :
+		<span class="recap">{{(order.shippingFees /100)|number_format(2, '.', ',')}}€</span>
+	</p>
+	<p>Total payé :
+		<span class="recap">{{(order.totalToPay /100)|number_format(2, '.', ',')}}€</span>
+	</p>
+</div>
+<div class="merci">
+	<p>Merci pour votre commande.</p>
+</div>
+<div class="container">
+	<h5>Suivez-nous sur nos réseaux</h5>
+	<p>
+		<a href="https://www.instagram.com/bewax003/">
+			<img src="{{email.image('@images/instagram-96.png')}}" alt="logo" height="40px">
+		</a>
+		<a href="https://www.facebook.com/BEWAX003">
+			<img src="{{email.image('@images/facebook-96.png')}}" alt="logo" height="40px">
+		</a>
+	</p>
+</div>
+{% endapply %}

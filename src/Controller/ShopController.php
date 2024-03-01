@@ -2,20 +2,24 @@
 
 namespace App\Controller;
 
+use App\Entity\Product;
 use App\Entity\ShopCategory;
+use App\Entity\ProductCategory;
 use App\Repository\ProductRepository;
 use App\Repository\ShopCategoryRepository;
-use Symfony\Bridge\Doctrine\Attribute\MapEntity;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class ShopController extends AbstractController
 {
 
     public function __construct(
         private ShopCategoryRepository $shopCategoryRepository,
-        private ProductRepository $productRepository
+        private ProductRepository $productRepository,
+        private RequestStack $requestStack
     ) {
     }
 
@@ -30,12 +34,11 @@ class ShopController extends AbstractController
         ]);
     }
 
-    #[Route('/shop/kids', name: 'app_shop_kids')]
-    public function showKidShop()
-    {
-        $kidCategory = $this->shopCategoryRepository->findOneByName('kids');
-        $articles = $this->productRepository->findByShopCategory($kidCategory);
-        // dd($articles[1]->getEnsemble()->getValues());
+    #[Route('/shop/kids/{category}', name: 'app_shop_kids')]
+    public function showKidShop(
+        #[MapEntity(mapping: ['category' => 'name'])] ProductCategory $category
+    ) {
+        $articles = $this->productRepository->findByProductCategory($category);
 
 
         return $this->render('shop/kidShop.html.twig', [
@@ -43,14 +46,25 @@ class ShopController extends AbstractController
         ]);
     }
 
-    #[Route('/shop/adults', name: 'app_shop_adults')]
-    public function showAdultShop()
-    {
-        $adultCategory = $this->shopCategoryRepository->findOneByName('adults');
-        $articles = $this->productRepository->findByShopCategory($adultCategory);
+    #[Route('/shop/adults/{category}', name: 'app_shop_adults')]
+    public function showAdultShop(
+        #[MapEntity(mapping: ['category' => 'name'])] ProductCategory $category
+    ) {
+        $articles = $this->productRepository->findByProductCategory($category);
 
         return $this->render('shop/adultShop.html.twig', [
             'articles' => $articles,
+        ]);
+    }
+
+    #[Route('/shop/{shopCategory}/{slug}/{id}', name: 'app_product_details')]
+    public function showProduct(
+        #[MapEntity(mapping: ['id' => 'id'])] Product $product
+    ) {
+
+        // dd($this->requestStack->getSession());
+        return $this->render('shop/productDetails.html.twig', [
+            'article' => $product,
         ]);
     }
 }

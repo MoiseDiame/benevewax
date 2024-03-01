@@ -1,1 +1,26 @@
 {% extends "base.html.twig" %}
+{% block body %}
+
+	<div class="container">
+		<ul class="nav nav-tabs justify-content-center">
+			<li class="nav-item">
+				<a class="nav-link link-dark fs-4" aria-current="page" href="{{path ('app_shop_kids', {category:'adultShoe'})}}">Chaussures</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link link-dark fs-4" href="{{path ('app_shop_adults', {category:'adultVeste'})}}">Vestes</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link link-dark fs-4" href="{{path ('app_shop_adults', {category:'adultEnsemble'})}}">Ensemble</a>
+			</li>
+		</ul>
+	</div>
+	<div class="container my-2">
+		<div class="row row-cols-md-3 row-cols-sm-2 row-cols-2 row-cols-lg-4 mt-2">
+			{% for article in articles %}
+
+				{% include "shop/_productCard.html.twig" %}
+
+			{% endfor %}
+		</div>
+
+	{% endblock %}

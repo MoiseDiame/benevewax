@@ -3,4 +3,13 @@
 {% block title %}B&E Wax
 {% endblock %}
 
-{% block body %}{% endblock %}
+{% block body %}
+	<div class="container text-center">
+		{% include 'homepage/_homeCarousel.html.twig' %}</div>
+	<h1 class="text-center my-2">Bienvenue sur la boutique en ligne  B&E Wax</h1>
+	<p class="text-center h4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae totam minus quae hic! Non et qui est enim eius praesentium! Doloremque atque dolorum, id dicta tempore consequatur odio accusamus iure.</p>
+	<p class="text-center">
+		<a href="{{path ('app_shop')}}" class="text-decoration-none">
+			Découvrez notre boutique</a>
+	</p>
+{% endblock %}
