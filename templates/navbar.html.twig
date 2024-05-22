@@ -13,14 +13,21 @@
 				<a class="nav-link " aria-current="page" href="{{path('home')}}">Accueil</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="{{path('app_shop_kids',{category:'kidShoe'})}}">
+				<a class="nav-link" href="{{path('app_shop_kids')}}">
 					Espace Enfants</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="{{path('app_shop_adults', {category:'adultShoe'})}}">Espace Adultes</a>
+				<a class="nav-link" href="{{path('app_shop_adults')}}">Espace Adultes</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="{{path('contact')}}">Contact</a>
+				<a class="nav-link" href="{{path('app_contact')}}">Contact</a>
+			</li>
+			<li class="nav-item ">
+				<div class="float-end">
+					<a class="nav-link" href="{{path('app_cart')}}">
+						<i class="bi bi-basket3 fs-5 "></i>
+					</a>
+				</div>
 			</li>
 
 		</ul>

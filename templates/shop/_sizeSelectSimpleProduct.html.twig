@@ -1,0 +1,17 @@
+{% set taille = '' %}
+{% if (article.productCategory.name == "adultVeste" or article.productCategory.name == "kidVeste")  %}
+	{% set taille = "Taille" %}
+{% else %}
+	{% set taille = "Pointure" %}
+
+{% endif %}
+
+<form action="{{path ('add_to_cart',{id:article.id} )}}" method="post" id="selectSizeForm" name="selectSizeForm">
+	<label for="selectedSize">{{taille}}</label>
+	<select class="form-select" aria-label="selectSize" id="selectSize" name="selectedSize" required="true">
+		{% for size in article.size %}
+			<option value="{{taille}}: {{size.size}}">{{size.size}}</option>
+
+		{% endfor %}
+	</select>
+</form>

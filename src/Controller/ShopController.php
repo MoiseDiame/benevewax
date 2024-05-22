@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Product;
 use App\Entity\ShopCategory;
 use App\Entity\ProductCategory;
+use App\Repository\ProductCategoryRepository;
 use App\Repository\ProductRepository;
 use App\Repository\ShopCategoryRepository;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +20,8 @@ class ShopController extends AbstractController
     public function __construct(
         private ShopCategoryRepository $shopCategoryRepository,
         private ProductRepository $productRepository,
-        private RequestStack $requestStack
+        private RequestStack $requestStack,
+        private ProductCategoryRepository $productCategoryRepository
     ) {
     }
 
@@ -34,26 +36,45 @@ class ShopController extends AbstractController
         ]);
     }
 
-    #[Route('/shop/kids/{category}', name: 'app_shop_kids')]
-    public function showKidShop(
-        #[MapEntity(mapping: ['category' => 'name'])] ProductCategory $category
-    ) {
-        $articles = $this->productRepository->findByProductCategory($category);
+    #[Route('/shop/kids', name: 'app_shop_kids')]
+    public function showKidShop()
+    {
+
+        $kidShoesCategory = $this->productCategoryRepository->findOneByName('kidShoe');
+        $kidVestCategory = $this->productCategoryRepository->findOneByName('kidVeste');
+        $kidEnsembleCategory = $this->productCategoryRepository->findOneByName('kidEnsemble');
+
+        $kidShoes = $this->productRepository->findByProductCategory($kidShoesCategory);
+        $kidVestes = $this->productRepository->findByProductCategory($kidVestCategory);
+        $kidEnsembles = $this->productRepository->findByProductCategory($kidEnsembleCategory);
 
 
         return $this->render('shop/kidShop.html.twig', [
-            'articles' => $articles,
+            'kidShoes' => $kidShoes,
+            'kidVestes' => $kidVestes,
+            'kidEnsembles' => $kidEnsembles,
+
         ]);
     }
 
-    #[Route('/shop/adults/{category}', name: 'app_shop_adults')]
-    public function showAdultShop(
-        #[MapEntity(mapping: ['category' => 'name'])] ProductCategory $category
-    ) {
-        $articles = $this->productRepository->findByProductCategory($category);
+    #[Route('/shop/adults', name: 'app_shop_adults')]
+    public function showAdultShop()
+    {
+
+        $adultShoesCategory = $this->productCategoryRepository->findOneByName('adultShoe');
+        $adultVestCategory = $this->productCategoryRepository->findOneByName('adultVeste');
+        $adultEnsembleCategory = $this->productCategoryRepository->findOneByName('adultEnsemble');
+
+        $adultShoes = $this->productRepository->findByProductCategory($adultShoesCategory);
+        $adultVestes = $this->productRepository->findByProductCategory($adultVestCategory);
+        $adultEnsembles = $this->productRepository->findByProductCategory($adultEnsembleCategory);
+
 
         return $this->render('shop/adultShop.html.twig', [
-            'articles' => $articles,
+            'adultShoes' => $adultShoes,
+            'adultVestes' => $adultVestes,
+            'adultEnsembles' => $adultEnsembles,
+
         ]);
     }
 
@@ -62,7 +83,7 @@ class ShopController extends AbstractController
         #[MapEntity(mapping: ['id' => 'id'])] Product $product
     ) {
 
-        // dd($this->requestStack->getSession());
+        // dd($product->getEnsemble()->getValues());
         return $this->render('shop/productDetails.html.twig', [
             'article' => $product,
         ]);

@@ -4,6 +4,8 @@ namespace App\Service\CartManagement;
 
 use App\Entity\Product;
 use App\Repository\ProductRepository;
+use App\Repository\ShippingCostRepository;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class CartManager
@@ -11,22 +13,29 @@ class CartManager
     private $session;
     public function __construct(
         private ProductRepository $productRepository,
-        private RequestStack $requestStack
+        private RequestStack $requestStack,
+        private ShippingCostRepository $shippingCostRepository
     ) {
         $this->session = $requestStack->getSession();
     }
 
 
-    public function add($id, $size)
+    public function add($id, $size, Request $request)
     {
 
         $cart = $this->session->get('cart', []);
 
-        if (!empty($cart[$id . $size])) {
-            $cart[$id . '-' . $size]++;
+        if (count($size) > 1) {
+            $selectedSize = implode('-', $size);
+        } else {
+            $selectedSize = $request->get('selectedSize');
+        }
+
+        if (!empty($cart[$id . $selectedSize])) {
+            $cart[$id . '-' . $selectedSize]++;
         } else {
 
-            $cart[$id . '-' .  $size] = 1;
+            $cart[$id . '-' .  $selectedSize] = 1;
         }
 
         $this->session->set('cart', $cart);
@@ -112,12 +121,18 @@ class CartManager
                 $infos = explode('-', $id);
                 $productId = $infos[0];
                 $product = $this->productRepository->findOneById($productId);
+                if ($product->isAssortiment()) {
+                    $size = $infos[1] . '/' . $infos[2];
+                } else {
+                    $size = $infos[1];
+                }
+
                 if ($product) {
                     $fullCart[] = [
                         'product' => $product,
                         'quantity' => $quantity,
                         'price' => $product->getPrice(),
-                        'size' => $infos[1],
+                        'size' => $size,
                         'sessionId' => $id
                     ];
                 } else {
@@ -127,5 +142,32 @@ class CartManager
             }
         }
         return $fullCart;
+    }
+
+    public function getTotalItemsPrice()
+    {
+
+        $cart = $this->session->get('cart', []);
+        $totalItemsPrice = 0;
+
+        foreach ($cart as $id => $quantity) {
+
+            $infos = explode('-', $id);
+            $productId = $infos[0];
+            $product = $this->productRepository->findOneById($productId);
+            $price = $product->getPrice();
+
+            $totalItemsPrice += $price * $quantity;
+        }
+        return $totalItemsPrice;
+    }
+
+    public function getShippingCost($destination)
+    {
+        if ($destination == "france") {
+            return $this->shippingCostRepository->findOneByName('france')->getPrice();
+        } else {
+            return $this->shippingCostRepository->findOneByName('other')->getPrice();
+        }
     }
 }

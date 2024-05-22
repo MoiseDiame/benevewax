@@ -20,18 +20,21 @@ class CartController extends AbstractController
     }
 
 
-    #[Route('/cart', name: 'app_cart')]
-    public function index(): Response
+    #[Route('/cart', name: 'app_cart', options: ["expose" => true])]
+    public function index(Request $request): Response
     {
-        // $this->requestStack->getSession('cart')->clear();
 
-        // dd($this->requestStack->getSession('cart'));
-
+        $destination = $request->get('cartSubmitFormSelect');
         $totalItems = $this->cartManager->getTotalItems();
         $fullCart = $this->cartManager->getFullCart();
+        $totalItemsPrice = $this->cartManager->getTotalItemsPrice();
+        $shippingFees = $this->cartManager->getShippingCost($destination);
+
         return $this->render('cart/index.html.twig', [
             "totalItems" => $totalItems,
-            'cart' => $fullCart
+            'cart' => $fullCart,
+            'totalItemsPrice' => $totalItemsPrice,
+            'shippingFees' => $shippingFees
         ]);
     }
 
@@ -43,9 +46,9 @@ class CartController extends AbstractController
          * Ajout d'un message flash à l'utilisateur et le client reste sur
          * la meme page afin de poursuivre ses achats 
          */
-
-        $selectedSize = $request->get('selectedSize');
-        $this->cartManager->add($id, $selectedSize);
+        // dd(implode('-', $request->request->all()));
+        $selectedSize = $request->request->all();
+        $this->cartManager->add($id, $selectedSize, $request);
         // $this->requestStack->getSession('cart')->clear();
         // dd($this->requestStack->getSession('cart'));
         // $this->addFlash('success', 'Article ajouté au panier');
