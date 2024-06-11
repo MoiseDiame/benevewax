@@ -1,7 +1,15 @@
-<form action="{{path ('app_order')}}" id="cartSubmitForm" name="cartSubmitForm">
-	<select name="cartSubmitFormSelect" id="cartSubmitFormSelect" class="form-select">
-		<option value="france">France</option>
-		<option value="other">Autres destinations</option>
-	</select>
-	<button type="submit" class="btn btn-warning rounded-pill my-2">Valider votre panier</button>
-</form>
+{{ form_start(submit_form,{id:"cartsubmit_form",action: path("app_order")}) }}
+{{ form_row(submit_form.destination) }}
+<fieldset id="infosPersonnellesLivraison" class="d-none">
+	<legend>Renseignez vos informations personnelles</legend>
+	{{ form_row(submit_form.email) }}
+	{{ form_row(submit_form.nom) }}
+	{{ form_row(submit_form.prenom) }}
+	{{ form_row(submit_form.adresse) }}
+	{{ form_row(submit_form.codePostal) }}
+	{{ form_row(submit_form.pays) }}
+	{{ form_row(submit_form.submit_cart) }}
+
+
+</fieldset>
+{{ form_end(submit_form) }}

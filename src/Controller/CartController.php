@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Form\CartType;
 use App\Service\CartManagement\CartManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,17 +25,26 @@ class CartController extends AbstractController
     public function index(Request $request): Response
     {
 
-        $destination = $request->get('cartSubmitFormSelect');
+        $destination = $request->get('cart')['destination'] ?? 'france';
         $totalItems = $this->cartManager->getTotalItems();
         $fullCart = $this->cartManager->getFullCart();
         $totalItemsPrice = $this->cartManager->getTotalItemsPrice();
         $shippingFees = $this->cartManager->getShippingCost($destination);
 
+        $submitForm = $this->createForm(CartType::class);
+        $submitForm->handleRequest($request);
+
+        if (($submitForm->isSubmitted()) && ($submitForm->isValid())) {
+            dd($submitForm->getData());
+        }
+
         return $this->render('cart/index.html.twig', [
             "totalItems" => $totalItems,
             'cart' => $fullCart,
             'totalItemsPrice' => $totalItemsPrice,
-            'shippingFees' => $shippingFees
+            'shippingFees' => $shippingFees,
+            'submit_form' => $submitForm
+
         ]);
     }
 

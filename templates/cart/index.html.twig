@@ -5,10 +5,9 @@
 
 {% block body %}
 
-	{{dump(cart)}}
-
 	{% if cart|length > 0  %}
 
+		<h1 class="text-center my-2">Mon Panier</h1>
 
 		<table class="table table-hover table align-middle table-responsive table table-borderless">
 			<thead>
@@ -73,8 +72,12 @@
 		<div class="row justify-content-center">
 			<h4 class="text-center">
 				Choisissez vos options de livraison</h4>
-			<div class="col-md-4 col-sm-9 mx-3 my-2">
-				{% include 'cart/_submitForm.html.twig' %}</div>
+			<div class="col-md-4 col-sm-9 mx-3 my-2 text-center">
+
+				{% include 'cart/_submitForm.html.twig' %}
+
+				<button id="showSubmitForm" class="btn btn-warning rounded-pill my-3">Valider votre panier</button>
+			</div>
 
 		{% else %}
 			<div class="text-center">Votre panier est vide.<br><div class="mt-3">

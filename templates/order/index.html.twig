@@ -1,20 +1,56 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello OrderController!{% endblock %}
+{% block title %}Paiement
+{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+	<table class="table table-hover table align-middle table-responsive table table-borderless">
+		<thead>
+			<tr>
+				<th scope="col">Produits</th>
+				<th scope="col">Quantité</th>
+				<th scope="col">Prix</th>
+				<th scope="col">Total</th>
+			</tr>
+		</thead>
+		<tbody class="productCard-font">
+			{% for product in cart %}
+				<tr>
+					<th scope="row">
+						<img src="{{asset('/uploads/ProductPictures/' ~ product.product.prezPicture)}}" alt="{{product.product.name}}" height="80px"/>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/home/moise/Documents/Clients/BeneveWax/benevewaxwebsite/src/Controller/OrderController.php'|file_link(0) }}">src/Controller/OrderController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/home/moise/Documents/Clients/BeneveWax/benevewaxwebsite/templates/order/index.html.twig'|file_link(0) }}">templates/order/index.html.twig</a></code></li>
-    </ul>
-</div>
+
+						<p class="fw-light">
+							<small>
+								{{product.product.name|upper}}</small>
+							<br>
+							<span>
+								<small>
+									{{product.size}}</span>
+							</small>
+						</p>
+					</th>
+					<td class="align-item-center">
+						<span>{{product.quantity}}
+						</span>
+					</td>
+					<td>
+						{{(product.price /100)|number_format(2, ',', '.')}}€
+					</td>
+
+					<td>{{(( product.price /100)* product.quantity)|number_format(2, ',', '.')}}€</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<div class="text-center my-2 mx-3" id="paymentContainer">
+		<div class="text-center my-2 mx-3 ">Total de vos achats :
+			<span id="total_cart">{{(totalItemsPrice /100)|number_format(2, ',', '.')}}</span>€</div>
+		<div class="text-center my-2 mx-3 ">Frais de port :
+			<span id="shippingFees">{{(shippingFees /100)|number_format(2, ',', '.')}}</span>€</div>
+		<div class="text-center my-2 mx-3 ">Total à payer :
+			<span id="total_to_pay">{{((total_to_pay) /100)|number_format(2, ',', '.')}}</span>€</div>
+	</div>
+	{% include 'order/_paytech_payment_form.html.twig' %}
 {% endblock %}
