@@ -23,10 +23,10 @@ function secureCountryChoice() {
 
 	if (selectDestination.val() == "france") {
 		$(document).find("#cart_pays").val("FRANCE")
-		$(document).find("#cart_pays").attr("disabled", true)
+		$(document).find("#cart_pays").attr("readonly", true)
 	} else {
 		$(document).find("#cart_pays").val("")
-		$(document).find("#cart_pays").attr("disabled", false)
+		$(document).find("#cart_pays").attr("readonly", false)
 	}
 }
 function sendShippingFeesAjax() {

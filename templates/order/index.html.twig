@@ -2,6 +2,16 @@
 
 {% block title %}Paiement
 {% endblock %}
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="https://paytech.sn/cdn/paytech.min.css">
+{% endblock %}
+{% block javascripts %}
+	{{ parent() }}
+	{{ encore_entry_script_tags('order_payment') }}
+	<script src="https://paytech.sn/cdn/paytech.min.js"></script>
+
+{% endblock %}
 
 {% block body %}
 
@@ -52,5 +62,6 @@
 		<div class="text-center my-2 mx-3 ">Total à payer :
 			<span id="total_to_pay">{{((total_to_pay) /100)|number_format(2, ',', '.')}}</span>€</div>
 	</div>
-	{% include 'order/_paytech_payment_form.html.twig' %}
+	{% include 'order/_paytech_payment_button.html.twig' %}
+
 {% endblock %}

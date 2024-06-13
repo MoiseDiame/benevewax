@@ -23,6 +23,7 @@ Encore
 	 */
 	.addEntry("app", "./assets/app.js")
 	.addEntry("cart_index", "./assets/js/cart/index.js")
+	.addEntry("order_payment", "./assets/js/order/index.js")
 
 	.addPlugin(new FosRouting())
 
