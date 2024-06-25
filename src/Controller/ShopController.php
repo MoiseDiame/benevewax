@@ -83,7 +83,6 @@ class ShopController extends AbstractController
         #[MapEntity(mapping: ['id' => 'id'])] Product $product
     ) {
 
-        // dd($product->getEnsemble()->getValues());
         return $this->render('shop/productDetails.html.twig', [
             'article' => $product,
         ]);
