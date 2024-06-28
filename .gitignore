@@ -36,5 +36,5 @@ yarn-error.log
 ###< liip/imagine-bundle ###
 
 ###> files uploads ###
-/public/uploads/
+/public/uploads/*
 ###< liip/imagine-bundle ###
