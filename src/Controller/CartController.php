@@ -8,22 +8,25 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class CartController extends AbstractController
 {
 
     public function __construct(
         private CartManager $cartManager,
-        private RequestStack  $requestStack
+        private RequestStack  $requestStack,
     ) {
     }
 
-
     #[Route('/cart', name: 'app_cart', options: ["expose" => true])]
-    public function index(Request $request): Response
-    {
+    public function index(
+        Request $request,
+        SessionInterface $session
+    ): Response {
 
         $destination = $request->get('cart')['destination'] ?? 'france';
         $totalItems = $this->cartManager->getTotalItems();
@@ -34,6 +37,7 @@ class CartController extends AbstractController
         $submitForm = $this->createForm(CartType::class);
         $submitForm->handleRequest($request);
 
+
         if (($submitForm->isSubmitted()) && ($submitForm->isValid())) {
             dd($submitForm->getData());
         }
@@ -43,7 +47,8 @@ class CartController extends AbstractController
             'cart' => $fullCart,
             'totalItemsPrice' => $totalItemsPrice,
             'shippingFees' => $shippingFees,
-            'submit_form' => $submitForm
+            'submit_form' => $submitForm,
+            'session' => $session->get('cart')
 
         ]);
     }
@@ -56,12 +61,9 @@ class CartController extends AbstractController
          * Ajout d'un message flash à l'utilisateur et le client reste sur
          * la meme page afin de poursuivre ses achats 
          */
-        // dd(implode('-', $request->request->all()));
         $selectedSize = $request->request->all();
         $this->cartManager->add($id, $selectedSize, $request);
-        // $this->requestStack->getSession('cart')->clear();
-        // dd($this->requestStack->getSession('cart'));
-        // $this->addFlash('success', 'Article ajouté au panier');
+        $this->addFlash('success', 'Article ajouté au panier');
         $route = $request->headers->get('referer');
 
         return $this->redirect($route);
@@ -96,5 +98,12 @@ class CartController extends AbstractController
         $this->cartManager->increase($id);
 
         return $this->redirectToRoute('app_cart');
+    }
+
+    #[Route('cart/updateTotalItems', name: 'app_cart_totalItems', options: ['expose' => true])]
+    public function getTotalItems()
+    {
+
+        return new JsonResponse($this->cartManager->getTotalItems());
     }
 }

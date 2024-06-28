@@ -31,7 +31,7 @@ class CartManager
             $selectedSize = $request->get('selectedSize');
         }
 
-        if (!empty($cart[$id . $selectedSize])) {
+        if (!empty($cart[$id . '-' . $selectedSize])) {
             $cart[$id . '-' . $selectedSize]++;
         } else {
 
@@ -39,6 +39,7 @@ class CartManager
         }
 
         $this->session->set('cart', $cart);
+        $this->updateTotalItems();
     }
 
     public function set($cart)
@@ -55,6 +56,7 @@ class CartManager
     public function remove()
     {
         return $this->session->remove('cart');
+        $this->updateTotalItems();
     }
 
     public function delete($id)
@@ -62,6 +64,7 @@ class CartManager
         $cart = $this->session->get('cart', []);
 
         unset($cart[$id]);
+        $this->updateTotalItems();
 
         return $this->session->set('cart', $cart);
     }
@@ -75,6 +78,8 @@ class CartManager
         } else {
             unset($cart[$id]);
         }
+        $this->updateTotalItems();
+
         return $this->session->set('cart', $cart);
     }
 
@@ -87,9 +92,18 @@ class CartManager
         } else {
             return;
         }
+        $this->updateTotalItems();
         return $this->session->set('cart', $cart);
     }
 
+    public function updateTotalItems()
+    {
+
+        $totalItems = $this->getTotalItems();
+        $this->session->set('totalItems', $totalItems);
+
+        return;
+    }
 
 
 

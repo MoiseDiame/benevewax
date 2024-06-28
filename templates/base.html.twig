@@ -21,6 +21,13 @@
 		{% block navbar %}
 			{% include 'navbar.html.twig' %}
 		{% endblock %}
+
+		{% for message in app.flashes('success') %}
+			<div class="alert alert-success">
+				{{message}}
+			</div>
+		{% endfor %}
+
 		{% block body %}{% endblock %}
 		{% block footer %}
 			{% include 'footer.html.twig' %}

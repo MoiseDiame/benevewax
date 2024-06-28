@@ -1,8 +1,10 @@
 import Routing from "fos-router"
 
 document.addEventListener("DOMContentLoaded", function () {
+	getTotalItemsAjaxCall()
 	sendShippingFeesAjax()
 	secureCountryChoice()
+	updateItemsInCart()
 
 	let selectDestination = $(document).find("#cart_destination")
 	let buttonShowSubmitForm = $(document).find("#showSubmitForm")
@@ -44,5 +46,25 @@ function sendShippingFeesAjax() {
 		$(document)
 			.find("#total_to_pay")
 			.replaceWith($(response).find("#total_to_pay"))
+	})
+}
+
+function updateItemsInCart() {
+	let increaseButton = $(document).find(".bi-plus-square-dotted")
+	let decreaseButton = $(document).find(".bi-dash-square-dotted")
+
+	increaseButton.add(decreaseButton).on("click", function () {
+		getTotalItemsAjaxCall()
+	})
+}
+
+function getTotalItemsAjaxCall() {
+	$.ajax({
+		url: Routing.generate("app_cart_totalItems"),
+	}).done(function (response) {
+		let cartIcon = $(document).find(".cartIcon")
+		if (response > 0) {
+			cartIcon.html(response)
+		}
 	})
 }
