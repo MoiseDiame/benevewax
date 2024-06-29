@@ -36,7 +36,7 @@ yarn-error.log
 ###< liip/imagine-bundle ###
 
 ###> files uploads ###
-/public/uploads/*
+/public/uploads/ProductPictures/*
 !/public/uploads/.gitkeep
 !/public/uploads/ProductPictures/.gitkeep
 
