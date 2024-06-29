@@ -38,4 +38,6 @@ yarn-error.log
 ###> files uploads ###
 /public/uploads/*
 !/public/uploads/.gitkeep
+!/public/uploads/ProductPictures/.gitkeep
+
 ###< liip/imagine-bundle ###
