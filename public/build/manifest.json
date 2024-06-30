@@ -1,0 +1,13 @@
+{
+  "build/app.css": "/build/app.css",
+  "build/app.js": "/build/app.js",
+  "build/cart_index.js": "/build/cart_index.js",
+  "build/shop_index.js": "/build/shop_index.js",
+  "build/order_payment.js": "/build/order_payment.js",
+  "build/runtime.js": "/build/runtime.js",
+  "build/vendors-node_modules_fos-router_public_js_router_js-node_modules_jquery_dist_jquery_js-node_m-f4c929.js": "/build/vendors-node_modules_fos-router_public_js_router_js-node_modules_jquery_dist_jquery_js-node_m-f4c929.js",
+  "build/vendors-node_modules_bootstrap_dist_js_bootstrap_esm_js-node_modules_bootstrap-icons_font_boo-fa8835.css": "/build/vendors-node_modules_bootstrap_dist_js_bootstrap_esm_js-node_modules_bootstrap-icons_font_boo-fa8835.css",
+  "build/vendors-node_modules_bootstrap_dist_js_bootstrap_esm_js-node_modules_bootstrap-icons_font_boo-fa8835.js": "/build/vendors-node_modules_bootstrap_dist_js_bootstrap_esm_js-node_modules_bootstrap-icons_font_boo-fa8835.js",
+  "build/fonts/bootstrap-icons.woff?": "/build/fonts/bootstrap-icons.39795c0b.woff",
+  "build/fonts/bootstrap-icons.woff2?": "/build/fonts/bootstrap-icons.b7bcc075.woff2"
+}
