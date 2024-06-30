@@ -5,6 +5,7 @@
  * which should already be in your base.html.twig.
  */
 import "./styles/app.scss"
+import "./js/shop/index"
 
 const $ = require("jquery")
 

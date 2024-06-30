@@ -11,6 +11,8 @@ function getTotalItemsAjaxCall() {
 		let cartIcon = $(document).find(".cartIcon")
 		if (response > 0) {
 			cartIcon.html(response)
+		} else {
+			cartIcon.html(" ")
 		}
 	})
 }
