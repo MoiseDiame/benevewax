@@ -2,12 +2,13 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Order;
 use App\Entity\Product;
+use App\Entity\ShippingCost;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Controller\Admin\KidVesteCrudController;
 use App\Controller\Admin\KidEnsembleCrudController;
-use App\Entity\ShippingCost;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
@@ -44,6 +45,9 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
+        yield MenuItem::linkToCrud('Commandes', 'fas fa-cart-shopping', Order::class)
+            ->setController(OrderCrudController::class);
+
         yield MenuItem::subMenu('Boutique Enfants', 'fas fa-baby')->setSubItems([
             MenuItem::linkToCrud('Chaussures', 'fas fa-shoe-prints', Product::class)
                 ->setController(KidShoesCrudController::class),

@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
+use App\Enum\OrderStatusEnum;
 use App\Repository\OrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Column;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(name: '`order`')]
@@ -49,6 +51,9 @@ class Order
 
     #[ORM\Column(length: 255)]
     private ?string $address = null;
+
+    #[ORM\Column(length: 255, nullable: true, enumType: OrderStatusEnum::class)]
+    private ?string $status = null;
 
     public function __construct()
     {
@@ -206,6 +211,18 @@ class Order
     public function setAddress(string $address): static
     {
         $this->address = $address;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?string $status): static
+    {
+        $this->status = $status;
 
         return $this;
     }

@@ -18,8 +18,11 @@
 			<div class="tab-pane fade show active" id="pills-adultShoes" role="tabpanel" aria-labelledby="adultShoes-tab">
 				<div class="row row-cols-md-3 row-cols-sm-2 row-cols-2 row-cols-lg-4 mt-2">
 					{% for article in adultShoes %}
+						{% if article.available %}
 
-						{% include "shop/_productCard.html.twig" %}
+							{% include "shop/_productCard.html.twig" %}
+
+						{% endif %}
 
 					{% endfor %}
 				</div>
@@ -27,18 +30,18 @@
 			<div class="tab-pane fade" id="pills-adultVestes" role="tabpanel" aria-labelledby="adultVestes-tab">
 				<div class="row row-cols-md-3 row-cols-sm-2 row-cols-2 row-cols-lg-4 mt-2">
 					{% for article in adultVestes %}
-
-						{% include "shop/_productCard.html.twig" %}
-
+						{% if article.available %}
+							{% include "shop/_productCard.html.twig" %}
+						{% endif %}
 					{% endfor %}
 				</div>
 			</div>
 			<div class="tab-pane fade" id="pills-adultEnsembles" role="tabpanel" aria-labelledby="adultEnsembles-tab">
 				<div class="row row-cols-md-3 row-cols-sm-2 row-cols-2 row-cols-lg-4 mt-2">
 					{% for article in adultEnsembles %}
-
-						{% include "shop/_productCard.html.twig" %}
-
+						{% if article.available %}
+							{% include "shop/_productCard.html.twig" %}
+						{% endif %}
 					{% endfor %}
 				</div>
 			</div>

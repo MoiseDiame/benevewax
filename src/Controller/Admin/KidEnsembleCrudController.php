@@ -3,24 +3,30 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Product;
-use App\Repository\ProductCategoryRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\ShopCategoryRepository;
+use App\Repository\ProductCategoryRepository;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Field\SlugField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use phpDocumentor\Reflection\PseudoTypes\False_;
 
 class KidEnsembleCrudController extends AbstractCrudController
 {
@@ -45,31 +51,85 @@ class KidEnsembleCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id')
+                ->hideOnDetail()
+                ->hideOnIndex()
                 ->hideOnForm(),
 
-            TextField::new('name'),
+            TextField::new('name', 'Article'),
             TextEditorField::new('description'),
             SlugField::new('slug')
                 ->setTargetFieldName('name')
                 ->hideOnIndex()
                 ->hideOnDetail(),
             AssociationField::new('ensemble')
+                ->hideOnIndex()
+                ->hideOnDetail()
                 ->setFormTypeOption('choice_label', 'name')
                 ->setFormTypeOption('by_reference', false)
                 ->setQueryBuilder(function (QueryBuilder $queryBuilder) {
-                    $queryBuilder->where('entity.shopCategory = :category')
-                        ->setParameter('category', $this->shopCategoryRepository->findOneByName('kids'));
+                    $queryBuilder->where('entity.assortiment = :isAssortiment')
+                        ->andWhere('entity.shopCategory = :category')
+                        ->setParameters([
+                            'category' => $this->shopCategoryRepository->findOneByName('kids'),
+                            'isAssortiment' => false
+                        ]);
+                    // ->setParameter();
                 }),
-            MoneyField::new('price')->setCurrency('EUR')->setRequired(true),
-            BooleanField::new('available'),
-            ImageField::new('prezPicture')
+            CollectionField::new('ensemble', 'Ensemble')
+                ->onlyOnIndex()
+                ->onlyOnDetail(),
+            MoneyField::new('price', 'Prix')->setCurrency('EUR')->setRequired(true),
+            BooleanField::new('available', 'Disponibilité'),
+            ImageField::new('prezPicture', 'Photo de présentation')
                 ->setBasePath(self::BASE_PATH)
                 ->setUploadDir(self::UPLOAD_DIR)
                 ->setUploadedFileNamePattern('[slug].[randomhash].[extension]')
                 ->setRequired(false),
-
+            ImageField::new('otherpic1', 'illustartion 1')
+                ->hideOnIndex()
+                ->setBasePath(self::BASE_PATH)
+                ->setUploadDir(self::UPLOAD_DIR)
+                ->setUploadedFileNamePattern('[slug].[randomhash].[extension]')
+                ->setRequired(false),
+            ImageField::new('otherpic2', 'illustartion 2')
+                ->hideOnIndex()
+                ->setBasePath(self::BASE_PATH)
+                ->setUploadDir(self::UPLOAD_DIR)
+                ->setUploadedFileNamePattern('[slug].[randomhash].[extension]')
+                ->setRequired(false),
+            ImageField::new('otherpic3', 'illustartion 3')
+                ->hideOnIndex()
+                ->setBasePath(self::BASE_PATH)
+                ->setUploadDir(self::UPLOAD_DIR)
+                ->setUploadedFileNamePattern('[slug].[randomhash].[extension]')
+                ->setRequired(false),
         ];
     }
+
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud
+            ->setEntityLabelInSingular('Ensemble enfant')
+            ->setEntityLabelInPlural('Ensembles enfants')
+            ->setPageTitle('index', ' Ensembles Enfant ')
+            ->setPageTitle('detail', 'Détails de l\'ensemble')
+            ->setPageTitle('new', 'Ajouter un nouvel ensemble enfant')
+            ->setSearchFields(['name', 'available']);
+    }
+
+    public function configureFilters(Filters $filters): Filters
+    {
+        return $filters
+            ->add('name')
+            ->add('available');
+    }
+
+    public function configureActions(Actions $actions): Actions
+    {
+        return $actions
+            ->add(Crud::PAGE_INDEX, Action::DETAIL);
+    }
+
 
 
     public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder

@@ -3,15 +3,19 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Product;
-use App\Repository\ProductCategoryRepository;
 use Doctrine\ORM\QueryBuilder;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\ProductSizeRepository;
 use App\Repository\ShopCategoryRepository;
+use App\Repository\ProductCategoryRepository;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Field\SlugField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
@@ -50,24 +54,44 @@ class AdultShoesCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id')
-                ->hideOnForm(),
+                ->hideOnForm()
+                ->hideOnDetail()
+                ->hideOnIndex(),
 
-            TextField::new('name'),
+            TextField::new('name', 'Article'),
             TextEditorField::new('description'),
             SlugField::new('slug')
                 ->setTargetFieldName('name')
                 ->hideOnIndex()
                 ->hideOnDetail(),
-            AssociationField::new('size')
+            AssociationField::new('size', 'Pointures')
                 ->setFormTypeOption('choice_label', 'size')
                 ->setFormTypeOption('by_reference', false)
                 ->setQueryBuilder(function (QueryBuilder $queryBuilder) {
                     $queryBuilder->andWhere('entity.category = :category')
                         ->setParameter('category', 'adultShoe');
                 }),
-            MoneyField::new('price')->setCurrency('EUR')->setRequired(true),
-            BooleanField::new('available'),
-            ImageField::new('prezPicture')
+            MoneyField::new('price', 'Prix')->setCurrency('EUR')->setRequired(true),
+            BooleanField::new('available', 'Disponibilité'),
+            ImageField::new('prezPicture', 'Photo de présentation')
+                ->setBasePath(self::BASE_PATH)
+                ->setUploadDir(self::UPLOAD_DIR)
+                ->setUploadedFileNamePattern('[slug].[randomhash].[extension]')
+                ->setRequired(false),
+            ImageField::new('otherpic1', 'illustartion 1')
+                ->hideOnIndex()
+                ->setBasePath(self::BASE_PATH)
+                ->setUploadDir(self::UPLOAD_DIR)
+                ->setUploadedFileNamePattern('[slug].[randomhash].[extension]')
+                ->setRequired(false),
+            ImageField::new('otherpic2', 'illustartion 2')
+                ->hideOnIndex()
+                ->setBasePath(self::BASE_PATH)
+                ->setUploadDir(self::UPLOAD_DIR)
+                ->setUploadedFileNamePattern('[slug].[randomhash].[extension]')
+                ->setRequired(false),
+            ImageField::new('otherpic3', 'illustartion 3')
+                ->hideOnIndex()
                 ->setBasePath(self::BASE_PATH)
                 ->setUploadDir(self::UPLOAD_DIR)
                 ->setUploadedFileNamePattern('[slug].[randomhash].[extension]')
@@ -75,6 +99,31 @@ class AdultShoesCrudController extends AbstractCrudController
 
         ];
     }
+
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud
+            ->setEntityLabelInSingular('Modèle chaussure')
+            ->setEntityLabelInPlural('Modèles chaussures')
+            ->setPageTitle('index', ' Chaussures Adultes ')
+            ->setPageTitle('detail', 'Détails du modèle')
+            ->setPageTitle('new', 'Ajouter un nouveau modèle')
+            ->setSearchFields(['name', 'available']);
+    }
+
+    public function configureFilters(Filters $filters): Filters
+    {
+        return $filters
+            ->add('name')
+            ->add('available');
+    }
+
+    public function configureActions(Actions $actions): Actions
+    {
+        return $actions
+            ->add(Crud::PAGE_INDEX, Action::DETAIL);
+    }
+
 
     public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
     {

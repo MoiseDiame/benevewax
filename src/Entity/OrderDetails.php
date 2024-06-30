@@ -29,6 +29,12 @@ class OrderDetails
     #[ORM\JoinColumn(nullable: false)]
     private ?Order $myOrder = null;
 
+    public function __toString()
+    {
+        return $this->quantity . ' ' . '*' . ' ' . $this->product;
+    }
+
+
     public function getId(): ?int
     {
         return $this->id;

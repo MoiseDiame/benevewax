@@ -6,13 +6,13 @@ $(document).on("DOMContentLoaded", function () {
 
 	paymentButton.on("click", function () {
 		console.log("clicked")
-		$.ajax({
-			url: $(this).data("url"),
-			method: "POST",
-		}).done(function (response) {
-			console.log(response)
-			buy(response)
-		})
+		// $.ajax({
+		// 	url: $(this).data("url"),
+		// 	method: "POST",
+		// }).done(function (response) {
+		// 	console.log(response)
+		// 	buy(response)
+		// })
 	})
 })
 
