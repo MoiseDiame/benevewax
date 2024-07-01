@@ -22,12 +22,20 @@
 			{% include 'navbar.html.twig' %}
 		{% endblock %}
 
-		{% for message in app.flashes('success') %}
-			<div class="alert alert-success">
-				{{message}}
-			</div>
-		{% endfor %}
+		{% block flash_messages %}
 
+			{% for label, messages in app.flashes %}
+				{# <div class="alert alert-success">
+																{{message}}
+															</div> #}
+				{% for message in messages %}
+
+					<div class="flash-message " data-label="{{label}}" data-message="{{ message }}"></div>
+				{% endfor %}
+			{% endfor %}
+
+
+		{% endblock %}
 		{% block body %}{% endblock %}
 		{% block footer %}
 			{% include 'footer.html.twig' %}

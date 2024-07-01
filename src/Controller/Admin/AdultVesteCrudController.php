@@ -22,6 +22,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -64,12 +65,15 @@ class AdultVesteCrudController extends AbstractCrudController
                 ->hideOnIndex()
                 ->hideOnDetail(),
             AssociationField::new('size', 'Tailles')
+                ->onlyOnForms()
                 ->setFormTypeOption('choice_label', 'size')
                 ->setFormTypeOption('by_reference', false)
                 ->setQueryBuilder(function (QueryBuilder $queryBuilder) {
                     $queryBuilder->andWhere('entity.category = :category')
                         ->setParameter('category', 'adultVeste');
                 }),
+            CollectionField::new('size', 'Tailles')
+                ->hideOnForm(),
             MoneyField::new('price', 'Prix')->setCurrency('EUR')->setRequired(true),
             BooleanField::new('available', 'Disponibilité'),
             ImageField::new('prezPicture', 'Photo de présentation')

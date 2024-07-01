@@ -65,15 +65,15 @@ class KidVesteCrudController extends AbstractCrudController
                 ->hideOnIndex()
                 ->hideOnDetail(),
             AssociationField::new('size', 'Tailles')
-                ->hideOnIndex()
+                ->onlyOnForms()
                 ->setFormTypeOption('choice_label', 'size')
                 ->setFormTypeOption('by_reference', false)
                 ->setQueryBuilder(function (QueryBuilder $queryBuilder) {
                     $queryBuilder->andWhere('entity.category = :category')
                         ->setParameter('category', 'kidVeste');
                 }),
-            CollectionField::new('size', 'Pointures')
-                ->onlyOnIndex(),
+            CollectionField::new('size', 'Tailles')
+                ->hideOnForm(),
             MoneyField::new('price')->setCurrency('EUR')->setRequired(true),
             BooleanField::new('available', 'Disponibilité'),
             ImageField::new('prezPicture', 'Photo de présentation')

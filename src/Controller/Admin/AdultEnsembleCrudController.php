@@ -20,6 +20,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -59,6 +60,7 @@ class AdultEnsembleCrudController extends AbstractCrudController
                 ->hideOnIndex()
                 ->hideOnDetail(),
             AssociationField::new('ensemble')
+                ->onlyOnForms()
                 ->setFormTypeOption('choice_label', 'name')
                 ->setFormTypeOption('by_reference', false)
                 ->setQueryBuilder(function (QueryBuilder $queryBuilder) {
@@ -69,6 +71,8 @@ class AdultEnsembleCrudController extends AbstractCrudController
                             'isAssortiment' => false
                         ]);
                 }),
+            CollectionField::new('ensemble', 'Ensemble')
+                ->hideOnForm(),
             MoneyField::new('price', 'Prix')->setCurrency('EUR')->setRequired(true),
             BooleanField::new('available', 'Disponibilité'),
             ImageField::new('prezPicture', 'Photo de présentation')

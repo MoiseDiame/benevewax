@@ -62,8 +62,7 @@ class KidEnsembleCrudController extends AbstractCrudController
                 ->hideOnIndex()
                 ->hideOnDetail(),
             AssociationField::new('ensemble')
-                ->hideOnIndex()
-                ->hideOnDetail()
+                ->onlyOnForms()
                 ->setFormTypeOption('choice_label', 'name')
                 ->setFormTypeOption('by_reference', false)
                 ->setQueryBuilder(function (QueryBuilder $queryBuilder) {
@@ -73,11 +72,9 @@ class KidEnsembleCrudController extends AbstractCrudController
                             'category' => $this->shopCategoryRepository->findOneByName('kids'),
                             'isAssortiment' => false
                         ]);
-                    // ->setParameter();
                 }),
             CollectionField::new('ensemble', 'Ensemble')
-                ->onlyOnIndex()
-                ->onlyOnDetail(),
+                ->hideOnForm(),
             MoneyField::new('price', 'Prix')->setCurrency('EUR')->setRequired(true),
             BooleanField::new('available', 'Disponibilité'),
             ImageField::new('prezPicture', 'Photo de présentation')

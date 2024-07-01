@@ -6,6 +6,7 @@
  */
 import "./styles/app.scss"
 import "./js/shop/index"
+import "./js/notyf/notyf"
 
 const $ = require("jquery")
 

@@ -66,7 +66,7 @@ class KidShoesCrudController extends AbstractCrudController
                 ->hideOnIndex()
                 ->hideOnDetail(),
             AssociationField::new('size', 'Pointures')
-                ->hideOnIndex()
+                ->onlyOnForms()
                 ->setFormTypeOption('choice_label', 'size')
                 ->setFormTypeOption('by_reference', false)
                 ->setQueryBuilder(function (QueryBuilder $queryBuilder) {
@@ -74,7 +74,7 @@ class KidShoesCrudController extends AbstractCrudController
                         ->setParameter('category', 'kidShoe');
                 }),
             CollectionField::new('size', 'Pointures')
-                ->onlyOnIndex(),
+                ->hideOnForm(),
             MoneyField::new('price', 'Prix')->setCurrency('EUR')->setRequired(true),
             BooleanField::new('available', 'Disponibilité'),
             ImageField::new('prezPicture', 'Photo de présentation')
