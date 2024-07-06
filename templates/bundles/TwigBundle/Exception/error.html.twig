@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}B&E Wax - Page introuvable
+{% endblock %}
+
+{% block body %}
+	<h1 class="text-center my-2 h2">
+		Cette page reste introuvable, une erreur a dû se produire
+	</h1>
+	<p class="text-center">
+		Verifiez que vous avez renseigné une URL valide
+	</p>
+	<p class="text-center">
+		<a href="{{path ('home')}}" class="link-secondary text-decoration-none">
+			Retourner vers la page d'accueil</a>
+	</p>
+{% endblock %}

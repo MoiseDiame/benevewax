@@ -1,7 +1,21 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-	<div class="container">
-		<h1 class="text-center my-2">Boutique Enfants</h1>
+	<nav aria-label="breadcrumb justify-content-start container-fluid ms-1">
+		<ul class="breadcrumb ms-1">
+			<li class="breadcrumb-item">
+				<a href="{{path('app_shop')}}" class="link-warning">
+					<strong>
+						Boutique</strong>
+				</a>
+			</li>
+			<li class="breadcrumb-item active" aria-current="page">
+				<small>Boutique
+					{{'kids'|trans}}</small>
+			</li>
+		</ul>
+	</nav>
+	<div class="container text-center">
+		<h3 class="text-center mb-3">Boutique Enfants</h3>
 		<ul class="nav nav-pills justify-content-center mb-3" id="pills-tab" role="tablist">
 			<li class="nav-item" role="presentation">
 				<button class="nav-link active text-secondary mx-2" id="kidShoes-tab" data-bs-toggle="pill" data-bs-target="#pills-kidShoes" type="button" role="tab" aria-controls="pills-kidShoes" aria-selected="true">Chaussures</button>
@@ -15,7 +29,7 @@
 		</ul>
 		<div class="tab-content" id="pills-tabContent">
 			<div class="tab-pane fade show active" id="pills-kidShoes" role="tabpanel" aria-labelledby="kidShoes-tab">
-				<div class="row row-cols-md-3 row-cols-sm-2 row-cols-2 row-cols-lg-4 mt-2">
+				<div class="row row-cols-md-3 row-cols-sm-2 row-cols-2 row-cols-lg-4 my-2 d-flex align-items-end">
 					{% for article in kidShoes %}
 						{% if article.available %}
 							{% include "shop/_productCard.html.twig" %}
@@ -24,7 +38,7 @@
 				</div>
 			</div>
 			<div class="tab-pane fade" id="pills-kidVestes" role="tabpanel" aria-labelledby="kidVestes-tab">
-				<div class="row row-cols-md-3 row-cols-sm-2 row-cols-2 row-cols-lg-4 mt-2">
+				<div class="row row-cols-md-3 row-cols-sm-2 row-cols-2 row-cols-lg-4 my-2 d-flex align-items-end">
 					{% for article in kidVestes %}
 						{% if article.available %}
 							{% include "shop/_productCard.html.twig" %}
@@ -33,7 +47,7 @@
 				</div>
 			</div>
 			<div class="tab-pane fade" id="pills-kidEnsembles" role="tabpanel" aria-labelledby="kidEnsembles-tab">
-				<div class="row row-cols-md-3 row-cols-sm-2 row-cols-2 row-cols-lg-4 mt-2">
+				<div class="row row-cols-md-3 row-cols-sm-2 row-cols-2 row-cols-lg-4 my-2 d-flex align-items-end">
 					{% for article in kidEnsembles %}
 						{% if article.available %}
 							{% include "shop/_productCard.html.twig" %}

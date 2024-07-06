@@ -1,5 +1,5 @@
-<div class="col text-center d-flex align-items-end">
-	<div class="card border border-0 mx-1 h-100">
+<div class="col text-center d-flex flex-column h-100">
+	<div class="card border border-0 mx-1">
 		<a href={{path('app_product_details',{slug: article.slug,shopCategory: article.shopCategory.name,id:article.id} )}} class="text-decoration-none link-dark">
 			<div class="product-image">
 				<img src="{{asset('/uploads/ProductPictures/' ~ article.prezPicture)}}" class="card-img-top img-fluid " alt="{{article.name}}">
@@ -7,9 +7,6 @@
 			<div class="card-body">
 				<p class="card-title text-center ">
 					<small>{{article.name|upper}}</small>
-				</p>
-
-				<p class="card-text text-center border rounded-pill">Plus de détails
 				</p>
 			</div>
 			<div class="card-footer border border-0 bg-white">

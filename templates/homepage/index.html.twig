@@ -6,10 +6,12 @@
 {% block body %}
 	<div class="container text-center">
 		{% include 'homepage/_homeCarousel.html.twig' %}</div>
-	<h1 class="text-center my-4">Bienvenue sur la boutique en ligne  B&E Wax</h1>
-	<p class="text-center h4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae totam minus quae hic! Non et qui est enim eius praesentium! Doloremque atque dolorum, id dicta tempore consequatur odio accusamus iure.</p>
-	<p class="text-center">
-		<a href="{{path ('app_shop')}}" class="text-decoration-none fs-4 link-danger my-5">
-			Découvrez notre boutique</a>
+	<h1 class="text-center my-4 text-warning fw-bold">Bienvenue sur la boutique en ligne  B&E Wax</h1>
+	<p class="text-center fs-6 fst-italic fw-lighter">Nous vous proposons des modèles uniques de chaussures, vestes et accessoires customisés. Notre de vision est mettre en valeur les couleurs chaudes propres aux cultures africaines. Et quelle meilleure façon d'utiliser le wax qui est un symbole de l'élégance à l'Africaine. Notre objectif, vous apportez une touche d'élégance et de distinction supplémentaire avec des coloris variés. Vous trouverez certainement votre bonheur sur notre boutique aussi bien pour les adultes que pour les enfants</p>
+	<p class="text-center my-5">
+		<button class="btn btn-outline-warning rounder-pill border border-2 rounded-pill border-warning">
+			<a href="{{path ('app_shop')}}" class="text-decoration-none fs-4 link-dark fw-bold">
+				Découvrez notre boutique</a>
+		</button>
 	</p>
 {% endblock %}

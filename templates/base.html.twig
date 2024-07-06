@@ -25,9 +25,6 @@
 		{% block flash_messages %}
 
 			{% for label, messages in app.flashes %}
-				{# <div class="alert alert-success">
-																{{message}}
-															</div> #}
 				{% for message in messages %}
 
 					<div class="flash-message " data-label="{{label}}" data-message="{{ message }}"></div>

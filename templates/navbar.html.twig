@@ -1,24 +1,24 @@
-<nav class="navbar navbar-expand-lg container-fluid ">
+<nav class="navbar navbar-expand-lg container-fluid">
 	<a class="navbar-brand ms-1" href="{{path('home')}}">
 		<img src="{{ asset('/Images/logo_cut.JPG')| imagine_filter('header_logo')}}" alt="Logo Benevewax"/>
 	</a>
-	<button class="navbar-toggler order-2 order-lg-1 me-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
-		<span class="navbar-toggler-icon"></span>
+	<button class="navbar-toggler border-0 order-2 order-lg-1 me-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+		<span class="navbar-toggler-icon "></span>
 	</button>
-	<div class="collapse navbar-collapse" id="navbarSupportedContent">
+	<div class="collapse navbar-collapse justify-content-around" id="navbarSupportedContent">
 		<ul class="navbar-nav mb-2 mb-lg-0  ">
-			<li class="nav-item">
-				<a class="nav-link mx-2" aria-current="page" href="{{path('home')}}">Accueil</a>
+			<li class="nav-item btn btn-sm btn-outline-warning border-2 border-warning rounded-pill">
+				<a class="nav-link mx-5 fw-bold " aria-current="page" href="{{path('home')}}">Accueil</a>
 			</li>
-			<li class="nav-item">
-				<a class="nav-link mx-2" href="{{path('app_shop_kids')}}">
+			<li class="nav-item btn btn-sm btn-outline-warning border-2 border-warning rounded-pill">
+				<a class="nav-link mx-5 fw-bold" href="{{path('app_shop_kids')}}">
 					Espace Enfants</a>
 			</li>
-			<li class="nav-item">
-				<a class="nav-link mx-2" href="{{path('app_shop_adults')}}">Espace Adultes</a>
+			<li class="nav-item btn btn-sm btn-outline-warning border-2 border-warning rounded-pill">
+				<a class="nav-link mx-5 fw-bold" href="{{path('app_shop_adults')}}">Espace Adultes</a>
 			</li>
-			<li class="nav-item">
-				<a class="nav-link mx-2" href="{{path('app_contact')}}">Contact</a>
+			<li class="nav-item btn btn-sm btn-outline-warning border-2 border-warning rounded-pill">
+				<a class="nav-link mx-5 fw-bold" href="{{path('app_contact')}}">Contact</a>
 			</li>
 		</ul>
 	</div>
@@ -28,7 +28,7 @@
 		</a>
 	</div>
 </nav>
-<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+<div class="offcanvas offcanvas-end bg-warning" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
 	<div class="offcanvas-header">
 		<h5 class="offcanvas-title" id="offcanvasNavbarLabel">
 			<img src="{{ asset('/Images/logo_cut.JPG')| imagine_filter('header_logo')}}" alt="Logo Benevewax"/>
@@ -38,17 +38,17 @@
 	<div class="offcanvas-body">
 		<ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
 			<li class="nav-item">
-				<a class="nav-link mx-2" aria-current="page" href="{{path('home')}}">Accueil</a>
+				<a class="nav-link mx-2 fs-5" aria-current="page" href="{{path('home')}}">Accueil</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link mx-2" href="{{path('app_shop_kids')}}">
+				<a class="nav-link mx-2 fs-5" href="{{path('app_shop_kids')}}">
 					Espace Enfants</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link mx-2" href="{{path('app_shop_adults')}}">Espace Adultes</a>
+				<a class="nav-link mx-2 fs-5" href="{{path('app_shop_adults')}}">Espace Adultes</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link mx-2" href="{{path('app_contact')}}">Contact</a>
+				<a class="nav-link mx-2 fs-5" href="{{path('app_contact')}}">Contact</a>
 			</li>
 		</ul>
 	</div>
