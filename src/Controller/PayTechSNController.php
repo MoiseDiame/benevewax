@@ -22,6 +22,6 @@ class PayTechSNController extends AbstractController
 
         $response = $payTechResponse->getPayTechResponse($order);
 
-        return new JsonResponse($response);
+        return new JsonResponse();
     }
 }

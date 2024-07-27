@@ -39,6 +39,9 @@ class CartType extends AbstractType
             ->add('codePostal', TextType::class, [
                 'attr' => ['placeholder' => 'Code Postal']
             ])
+            ->add('ville', TextType::class, [
+                'attr' => ['placeholder' => 'Ville']
+            ])
             ->add('pays', TextType::class, [
                 'attr' => ['placeholder' => 'Pays']
             ])

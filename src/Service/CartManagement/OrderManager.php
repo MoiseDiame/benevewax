@@ -37,7 +37,7 @@ class OrderManager
         $order->setCreatedAt(new DateTimeImmutable('now'));
         $order->setCustomer($data['prenom'] . ' ' . $data['nom']);
         $order->setEmail($data['email']);
-        $order->setAddress($data['adresse'] . ' ' . $data['codePostal'] . ' ' . $data['pays']);
+        $order->setAddress($data['adresse'] . ' ' . $data['ville'] . ' ' . $data['codePostal'] . ' ' . $data['pays']);
         $order->setShippingFees($shippingFees);
         $order->setTotalToPay($totalToPay);
         $order->setPaid(false);
@@ -47,7 +47,8 @@ class OrderManager
         foreach ($fullCart as $item) {
             $orderDetail = new OrderDetails();
 
-            $orderDetail->setProduct($item['product']->getName() . ' ' . $item['size']);
+            $orderDetail->setProduct($item['product']->getName());
+            $orderDetail->setSize($item['size']);
             $orderDetail->setQuantity($item['quantity']);
             $orderDetail->setPrice($item['price']);
             $orderDetail->setTotal($item['quantity'] * $item['price']);

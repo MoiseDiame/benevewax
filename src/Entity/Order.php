@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Column;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(name: '`order`')]
@@ -20,36 +21,44 @@ class Order
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Groups('order_infos')]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column]
     private ?bool $paid = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('order_infos')]
     private ?string $reference = null;
 
     #[ORM\Column]
+    #[Groups('order_infos')]
     private ?float $shippingFees = null;
 
     #[ORM\Column]
+    #[Groups('order_infos')]
     private ?float $productsPrice = null;
 
     #[ORM\Column]
+    #[Groups('order_infos')]
     private ?float $totalToPay = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $tracking = null;
 
     #[ORM\OneToMany(mappedBy: 'myOrder', targetEntity: OrderDetails::class, cascade: ['persist'])]
+    #[Groups('order_infos')]
     private Collection $orderDetails;
 
     #[ORM\Column(length: 255)]
+    #[Groups('order_infos')]
     private ?string $customer = null;
 
     #[ORM\Column(length: 255)]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('order_infos')]
     private ?string $address = null;
 
     #[ORM\Column(length: 255, nullable: true, enumType: OrderStatusEnum::class)]
