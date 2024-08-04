@@ -61,8 +61,11 @@ class Order
     #[Groups('order_infos')]
     private ?string $address = null;
 
-    #[ORM\Column(length: 255, nullable: true, enumType: OrderStatusEnum::class)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $status = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $paypalOrderId = null;
 
     public function __construct()
     {
@@ -232,6 +235,18 @@ class Order
     public function setStatus(?string $status): static
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getPaypalOrderId(): ?string
+    {
+        return $this->paypalOrderId;
+    }
+
+    public function setPaypalOrderId(?string $paypalOrderId): static
+    {
+        $this->paypalOrderId = $paypalOrderId;
 
         return $this;
     }

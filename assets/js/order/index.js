@@ -3,7 +3,6 @@ import Routing from "fos-router"
 
 $(document).on("DOMContentLoaded", async function () {
 	let paypal
-
 	try {
 		let clientId = $(document).find("#paymentButton").data("clientid")
 
@@ -23,6 +22,7 @@ $(document).on("DOMContentLoaded", async function () {
 		}).done(async function (response) {
 			let orderInfos = JSON.parse(response)
 			let orderDetails = orderInfos.orderDetails
+
 			let items = []
 			orderDetails.forEach((item) => {
 				items.push({
@@ -44,7 +44,7 @@ $(document).on("DOMContentLoaded", async function () {
 				},
 			})
 			try {
-				console.log(orderInfos.totalToPay / 100)
+				// console.log(orderInfos.totalToPay / 100)
 				await paypal
 					.Buttons({
 						style: {
@@ -78,12 +78,7 @@ $(document).on("DOMContentLoaded", async function () {
 						},
 						// Finalizes the transaction after payer approval
 						onApprove: (data) => {
-							console.log("Payment done!")
-							fetch({
-								url: Routing.generate("app_order_success"),
-								method: "POST",
-								body: data,
-							})
+							handlePaypalOnApprove(data, orderInfos)
 						},
 						// The user closed the window
 						onCancel: () => {
@@ -91,6 +86,11 @@ $(document).on("DOMContentLoaded", async function () {
 						},
 						onError: (err) => {
 							console.log("Something went wrong", err)
+							let failUrl = Routing.generate("app_order_fail", {
+								orderRef: $(document).find("#paymentButton").data("orderref"),
+							})
+
+							window.location.assign(failUrl)
 						},
 					})
 					.render("#paypalSection")
@@ -109,6 +109,18 @@ function getOrderInfos() {
 	}).done(function (response) {
 		console.log(response)
 		return response
+	})
+}
+function handlePaypalOnApprove(data, orderInfos) {
+	$.ajax({
+		url: Routing.generate("app_order_approve", {
+			orderRef: orderInfos.reference,
+			paypalOrderId: data.orderID,
+		}),
+		method: "POST",
+	}).done(function (response) {
+		console.log(response)
+		window.location.assign(response)
 	})
 }
 

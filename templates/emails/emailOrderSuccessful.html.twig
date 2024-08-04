@@ -32,7 +32,7 @@
 </style>
 
 <div class="header">
-	<a href="{{url('home')}}"><img src="{{email.image('@images/logo_cut.JPG.png')}}" alt="logo" height="80px"></a>
+	<a href="{{url('home')}}"><img src="{{email.image('@images/logo_cut.JPG')}}" alt="logo" height="80px"></a>
 </div>
 <div>
 	<p>
@@ -43,9 +43,9 @@
 		<h4>Récapitulatif</h4>
 	</div>
 	<p>Client :
-		{{order.user.fullname}}</p>
+		{{order.customer}}</p>
 	<p>Adresse de livraison :
-		{{order.delivery}}</p>
+		{{order.address}}</p>
 
 </div>
 <div class="orderRecap">

@@ -2,12 +2,13 @@
 
 namespace App\Enum;
 
-enum OrderStatusEnum: string
+class OrderStatusEnum
 {
 
-    case INACHEVE = 'INACHEVE/NON PAYÉ';
-    case EN_COURS = 'EN COURS DE PREPARATION';
-    case PRETE = 'PRETE';
-    case EXPEDIEE = 'EXPEDIEE';
-    case LIVREE = 'LIVREE';
+    const INACHEVE = 'INACHEVE/NON PAYÉ';
+    const FRAUDE = 'FRAUDE SUSPECTEE';
+    const EN_COURS = 'EN COURS DE PREPARATION';
+    const PRETE = 'PRETE';
+    const EXPEDIEE = 'EXPEDIEE';
+    const LIVREE = 'LIVREE';
 }

@@ -6,6 +6,10 @@
 parameters:
   paypal_client_id: "%env(PAYPAL_CLIENT_ID)%"
   paypal_secretKey: "%env(PAYPAL_CLIENT_SECRET_KEY)%"
+  paypal_auth_prod_url: "%env(PAYPAL_AUTH_PROD_URL)%"
+  paypal_auth_sandbox_url: "%env(PAYPAL_AUTH_SANDBOX_URL)%"
+  paypal_payment_details_sandbox_url: "%env(PAYPAL_PAYMENT_DETAILS_SANDBOX_URL)%"
+  paypal_payment_details_prod_url: "%env(PAYPAL_PAYMENT_DETAILS_PROD_URL)%"
 
 services:
   # default configuration for services in *this* file

@@ -22,6 +22,16 @@ $(document).on("DOMContentLoaded", () => {
 				},
 				background: "none",
 			},
+			{
+				type: "error",
+				className: "bg-danger",
+				icon: {
+					className: "materials-symbols-rounded text-white",
+					tagName: "span",
+					text: "",
+				},
+				background: "none",
+			},
 		],
 	})
 

@@ -5,6 +5,7 @@ namespace App\Service\CartManagement;
 use App\Entity\Order;
 use App\Entity\OrderDetails;
 use App\Entity\Product;
+use App\Enum\OrderStatusEnum;
 use App\Repository\ProductRepository;
 use App\Repository\ShippingCostRepository;
 use DateTimeImmutable;
@@ -42,7 +43,8 @@ class OrderManager
         $order->setTotalToPay($totalToPay);
         $order->setPaid(false);
         $order->setProductsPrice($totalItemsPrice);
-        $order->setReference(uniqid('B&E Wax - '));
+        $order->setReference(uniqid('B&E-Wax-'));
+        $order->setStatus(OrderStatusEnum::INACHEVE);
 
         foreach ($fullCart as $item) {
             $orderDetail = new OrderDetails();
@@ -56,8 +58,10 @@ class OrderManager
             $order->addOrderDetail($orderDetail);
         }
 
+        // dd($order);
         $this->entityManager->persist($order);
         $this->entityManager->flush();
+
         return $order;
     }
 }

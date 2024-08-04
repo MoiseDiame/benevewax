@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}B&E Wax -Commande validée
+{% endblock %}
+
+{% block body %}
+	<h1 class="text-center h3">
+		Merci pour votre commande
+	</h1>
+	<div class="row justify-content-center mt-2">
+		<div class="col-lg-8 text-center">
+			<p>
+				Votre commande
+				{{order.reference}}
+				a bien été pris en compte.
+				<br>
+				Un e-mail vous sera adressé à l'adresse
+				{{order.email}}.
+				<br>Vous recevrez également des mails qui vont informeront de l'avancement de la commande
+			</p>
+			<p class="text-center">
+				<a href="{{path('app_shop')}}" type="button" class="btn btn-outline-warning rounded-pill border-secondary text-center">
+					Aller vers la boutique
+				</a>
+			</p>
+		</p>
+	</div>
+</div>{% endblock %}

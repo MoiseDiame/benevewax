@@ -53,6 +53,11 @@ class KidShoesCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
+        $photoRequired = false;
+        if ($pageName == "new") {
+            $photoRequired = true;
+        }
+
         return [
             IdField::new('id')
                 ->hideOnDetail()
@@ -81,7 +86,7 @@ class KidShoesCrudController extends AbstractCrudController
                 ->setBasePath(self::BASE_PATH)
                 ->setUploadDir(self::UPLOAD_DIR)
                 ->setUploadedFileNamePattern('[slug].[randomhash].[extension]')
-                ->setRequired(false),
+                ->setRequired($photoRequired),
             ImageField::new('otherpic1', 'illustartion 1')
                 ->hideOnIndex()
                 ->setBasePath(self::BASE_PATH)
