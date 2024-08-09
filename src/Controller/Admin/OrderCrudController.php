@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Order;
+use App\Enum\OrderStatusEnum;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
@@ -34,7 +35,7 @@ class OrderCrudController extends AbstractCrudController
             ->setPageTitle('index', ' Commandes')
             ->setPageTitle('detail', 'Détails de la commande')
             ->setPageTitle('new', 'Ajouter manuellement une commande')
-            ->setSearchFields(['paid', 'status.status', 'user.firstname'])
+            ->setSearchFields(['paid', 'status', 'customer'])
             ->setDefaultSort(['createdAt' => 'DESC']);
     }
 
@@ -45,7 +46,7 @@ class OrderCrudController extends AbstractCrudController
                 ->hideOnIndex()
                 ->hideOnDetail(),
             TextField::new('customer', 'Client'),
-            EmailField::new('email', 'email'),
+            EmailField::new('email', 'Email'),
             CollectionField::new('orderDetails', 'Détails de la commande')
                 ->hideWhenUpdating(),
             TextField::new('address', 'Adresse de livraison'),
@@ -55,12 +56,22 @@ class OrderCrudController extends AbstractCrudController
             MoneyField::new('shippingFees', 'Frais de port')
                 ->setCurrency('EUR')
                 ->hideWhenUpdating(),
-            MoneyField::new('totalToPay', 'Total à payer')
+            MoneyField::new('totalToPay', 'Total')
                 ->setCurrency('EUR')
                 ->hideWhenUpdating(),
             BooleanField::new('paid', 'Paiement effectué')
                 ->renderAsSwitch(false),
-            ChoiceField::new('status', 'Statut '),
+            ChoiceField::new('status', 'Statut ')
+                ->hideOnDetail()
+                ->hideOnIndex()
+                ->setChoices([
+                    'Prête' => OrderStatusEnum::PRETE,
+                    'Expédiée' => OrderStatusEnum::EXPEDIEE,
+                    'Livrée' => OrderStatusEnum::LIVREE,
+                    'En cours' => OrderStatusEnum::EN_COURS
+                ]),
+            TextField::new('status', 'Statut')
+                ->hideOnForm(),
             DateField::new('createdAt', 'Date de commande'),
             TextField::new('reference', 'Numéro de commande')
                 ->hideOnIndex()
@@ -75,7 +86,7 @@ class OrderCrudController extends AbstractCrudController
     public function configureActions(Actions $actions): Actions
     {
         return parent::configureActions($actions)
-            ->disable(Action::NEW)
+            ->disable(Action::NEW, Action::DELETE)
             ->add(Crud::PAGE_INDEX, Action::DETAIL);
     }
 

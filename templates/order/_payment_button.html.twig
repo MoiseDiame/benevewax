@@ -1,6 +1,8 @@
 <div class="container text-center my-5">
 	<div class="mt-3">
-		<button class="rounded-pill btn btn-warning" id="paymentButton" data-clientid={{paypalClientId}} data-orderref="{{order.reference}}">Payer
-			{{(total_to_pay / 100)|number_format(2, ',', '.')}}€</button>
+		<button class="rounded-pill btn btn-warning p-2" id="paymentButton" data-clientid={{paypalClientId}} data-orderref="{{order.reference}}">Payer
+			{{(total_to_pay / 100)|number_format(2, ',', '.')}}€
+			</button>
+			<p><small>* et accepter nos <a href="{{path('cgv')}}" class="text-decoration-none link-dark">cgv</a></small></p>
 	</div>
 </div>

@@ -38,4 +38,12 @@ class AccessoriesPagesController extends AbstractController
 
         return $this->render('accessories_pages/privatePolicy.html.twig', []);
     }
+
+    #[Route('/conditions-generales-de-vente', name: 'cgv')]
+    #[Cache(public: true, maxage: 3600, mustRevalidate: true)]
+    public function CGV(): Response
+    {
+
+        return $this->render('accessories_pages/cgv.html.twig', []);
+    }
 }

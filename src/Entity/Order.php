@@ -67,6 +67,9 @@ class Order
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $paypalOrderId = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $telephone = null;
+
     public function __construct()
     {
         $this->orderDetails = new ArrayCollection();
@@ -247,6 +250,18 @@ class Order
     public function setPaypalOrderId(?string $paypalOrderId): static
     {
         $this->paypalOrderId = $paypalOrderId;
+
+        return $this;
+    }
+
+    public function getTelephone(): ?string
+    {
+        return $this->telephone;
+    }
+
+    public function setTelephone(?string $telephone): static
+    {
+        $this->telephone = $telephone;
 
         return $this;
     }

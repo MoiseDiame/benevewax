@@ -4,8 +4,10 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
-  paypal_client_id: "%env(PAYPAL_CLIENT_ID)%"
-  paypal_secretKey: "%env(PAYPAL_CLIENT_SECRET_KEY)%"
+  paypal_sandbox_client_id: "%env(PAYPAL_SANDBOX_CLIENT_ID)%"
+  paypal_sandbox_secretKey: "%env(PAYPAL_SANDBOX_CLIENT_SECRET_KEY)%"
+  paypal_prod_client_id: "%env(PAYPAL_PROD_CLIENT_ID)%"
+  paypal_prod_secretKey: "%env(PAYPAL_PROD_CLIENT_SECRET_KEY)%"
   paypal_auth_prod_url: "%env(PAYPAL_AUTH_PROD_URL)%"
   paypal_auth_sandbox_url: "%env(PAYPAL_AUTH_SANDBOX_URL)%"
   paypal_payment_details_sandbox_url: "%env(PAYPAL_PAYMENT_DETAILS_SANDBOX_URL)%"

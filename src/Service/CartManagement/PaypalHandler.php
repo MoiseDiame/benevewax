@@ -12,6 +12,8 @@ class PaypalHandler
 
     private $auth_url;
     private $payment_details_url;
+    private $clientId;
+    private $clientSecret;
 
     public function __construct(
         private EntityManagerInterface $entityManager,
@@ -22,9 +24,13 @@ class PaypalHandler
         if ($_ENV['APP_ENV'] == 'dev') {
             $this->auth_url = $this->parameterBag->get('paypal_auth_sandbox_url');
             $this->payment_details_url = $this->parameterBag->get('paypal_payment_details_sandbox_url');
+            $this->clientId = $this->parameterBag->get('paypal_sandbox_client_id');
+            $this->clientSecret = $this->parameterBag->get('paypal_sandbox_secretKey');
         } elseif ($_ENV['APP_ENV'] == 'prod') {
             $this->auth_url = $this->parameterBag->get('paypal_auth_prod_url');
             $this->payment_details_url = $this->parameterBag->get('paypal_payment_details_prod_url');
+            $this->clientId = $this->parameterBag->get('paypal_prod_client_id');
+            $this->clientSecret = $this->parameterBag->get('paypal_prod_secretKey');
         }
     }
 
@@ -57,7 +63,7 @@ class PaypalHandler
     {
         try {
             $response = $this->httpClient->request('POST', $this->auth_url, [
-                'auth_basic' => [$this->parameterBag->get('paypal_client_id'), $this->parameterBag->get('paypal_secretKey')],
+                'auth_basic' => [$this->clientId, $this->clientSecret],
                 'headers' => [
                     'Content-Type' => 'application/x-www-form-urlencoded',
                 ],
@@ -82,8 +88,6 @@ class PaypalHandler
 
     public function getPaymentDetails($paymentId)
     {
-        // $url = $this->payment_details_url . $paymentId . '/capture';
-        // // dd($url, 'Bearer ' . $this->getPaypalToken());
         $response = $this->httpClient->request('GET', $this->payment_details_url . $paymentId, [
             'headers' => [
                 'Content-Type' => 'application/json',

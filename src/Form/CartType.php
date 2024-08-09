@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Karser\Recaptcha3Bundle\Validator\Constraints\Recaptcha3;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
 
 class CartType extends AbstractType
 {
@@ -32,6 +33,10 @@ class CartType extends AbstractType
             ])
             ->add('email', EmailType::class, [
                 'attr' => ['placeholder' => 'Email']
+            ])
+            ->add('telephone', TelType::class, [
+                'label' => 'Téléphone',
+                'attr' => ['placeholder' => 'Téléphone']
             ])
             ->add('adresse', TextType::class, [
                 'attr' => ['placeholder' => 'Adresse']

@@ -33,11 +33,16 @@ class OrderController extends AbstractController
     #[Route('/order', name: 'app_order', methods: ['POST'])]
     public function index(Request $request, CartManager $cartManager, OrderManager $orderManager, ParameterBagInterface $parameterBag): Response
     {
+        $paypalClientId = '';
+        if ($_ENV['APP_ENV'] == 'dev') {
+            $paypalClientId = $parameterBag->get('paypal_sandbox_client_id');
+        } elseif ($_ENV['APP_ENV'] == 'prod') {
+            $paypalClientId = $parameterBag->get('paypal_prod_client_id');
+        }
 
         $orderData = $request->get('cart');
 
         $order = $orderManager->createOrder($orderData);
-        $paypalClientId = $parameterBag->get('paypal_client_id');
 
         $destination = $orderData['destination'];
         $fullCart = $cartManager->getFullCart();
@@ -77,7 +82,6 @@ class OrderController extends AbstractController
         UrlGeneratorInterface $urlGenerator
     ) {
 
-        // dd($request, $order, $paypalOrderId);
         if ($paypalHandler->handlePaypalPayment($paypalOrderId, $order) == true) {
             $order->setPaypalOrderId($paypalOrderId)
                 ->setPaid(true)

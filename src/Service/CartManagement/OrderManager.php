@@ -39,6 +39,7 @@ class OrderManager
         $order->setCustomer($data['prenom'] . ' ' . $data['nom']);
         $order->setEmail($data['email']);
         $order->setAddress($data['adresse'] . ' ' . $data['ville'] . ' ' . $data['codePostal'] . ' ' . $data['pays']);
+        $order->setTelephone($data['telephone']);
         $order->setShippingFees($shippingFees);
         $order->setTotalToPay($totalToPay);
         $order->setPaid(false);
