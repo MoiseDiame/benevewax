@@ -12,6 +12,8 @@ parameters:
   paypal_auth_sandbox_url: "%env(PAYPAL_AUTH_SANDBOX_URL)%"
   paypal_payment_details_sandbox_url: "%env(PAYPAL_PAYMENT_DETAILS_SANDBOX_URL)%"
   paypal_payment_details_prod_url: "%env(PAYPAL_PAYMENT_DETAILS_PROD_URL)%"
+  paypal_capture_order_payment_sandbox_url: "%env(PAYPAL_CAPTURE_ORDER_PAYMENT_SANDBOX_URL)%"
+  paypal_capture_order_payment_prod_url: "%env(PAYPAL_CAPTURE_ORDER_PAYMENT_PROD_URL)%"
 
 services:
   # default configuration for services in *this* file

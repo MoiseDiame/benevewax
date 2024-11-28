@@ -12,6 +12,7 @@ class PaypalHandler
 
     private $auth_url;
     private $payment_details_url;
+    private $capture_payment_order_url;
     private $clientId;
     private $clientSecret;
 
@@ -24,11 +25,13 @@ class PaypalHandler
         if ($_ENV['APP_ENV'] == 'dev') {
             $this->auth_url = $this->parameterBag->get('paypal_auth_sandbox_url');
             $this->payment_details_url = $this->parameterBag->get('paypal_payment_details_sandbox_url');
+            $this->capture_payment_order_url = $this->parameterBag->get('paypal_capture_order_payment_sandbox_url');
             $this->clientId = $this->parameterBag->get('paypal_sandbox_client_id');
             $this->clientSecret = $this->parameterBag->get('paypal_sandbox_secretKey');
         } elseif ($_ENV['APP_ENV'] == 'prod') {
             $this->auth_url = $this->parameterBag->get('paypal_auth_prod_url');
             $this->payment_details_url = $this->parameterBag->get('paypal_payment_details_prod_url');
+            $this->capture_payment_order_url = $this->parameterBag->get('paypal_capture_order_payment_url');
             $this->clientId = $this->parameterBag->get('paypal_prod_client_id');
             $this->clientSecret = $this->parameterBag->get('paypal_prod_secretKey');
         }
@@ -45,11 +48,12 @@ class PaypalHandler
     public function handlePaypalPayment($paypalOrderId, $order): bool
     {
 
+        $orderAmount = $order->getTotalToPay() / 100;
+        $this->capturePaymentFromOrder($paypalOrderId);
         $paypalDetails = $this->getPaymentDetails($paypalOrderId);
         $paypalPurchaseDetails = $paypalDetails['purchase_units'][0];
-        $orderAmount = $order->getTotalToPay() / 100;
 
-        if (($paypalDetails['status'] == 'COMPLETED' || 'APPROVED') &&
+        if (($paypalDetails['status'] == 'COMPLETED') &&
             ($paypalPurchaseDetails['amount']['value'] == $orderAmount) &&
             ($paypalPurchaseDetails['amount']['currency_code'] == 'EUR')
         ) {
@@ -96,5 +100,17 @@ class PaypalHandler
         ]);
 
         return $response->toArray();
+    }
+
+    public function capturePaymentFromOrder($paymentId): void
+    {
+        $response = $this->httpClient->request('POST', $this->capture_payment_order_url . $paymentId . '/capture', [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Authorization' => 'Bearer ' . $this->getPaypalToken()
+            ]
+        ]);
+
+        // return $response->getStatusCode() == 201;
     }
 }
