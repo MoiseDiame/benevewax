@@ -111,7 +111,7 @@ class PaypalHandler
             ]
         ]);
 
-        $this->logger->info("Capture payment response: " . $response);
+        // $this->logger->info("Capture payment response: " . $response);
 
         // return $response->getStatusCode() == 201;
     }
