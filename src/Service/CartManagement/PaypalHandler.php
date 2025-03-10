@@ -4,6 +4,7 @@ namespace App\Service\CartManagement;
 
 use App\Repository\OrderRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -20,7 +21,8 @@ class PaypalHandler
         private EntityManagerInterface $entityManager,
         private ParameterBagInterface $parameterBag,
         private HttpClientInterface $httpClient,
-        private OrderRepository $orderRepository
+        private OrderRepository $orderRepository,
+        private LoggerInterface $logger
     ) {
         if ($_ENV['APP_ENV'] == 'dev') {
             $this->auth_url = $this->parameterBag->get('paypal_auth_sandbox_url');
@@ -31,7 +33,7 @@ class PaypalHandler
         } elseif ($_ENV['APP_ENV'] == 'prod') {
             $this->auth_url = $this->parameterBag->get('paypal_auth_prod_url');
             $this->payment_details_url = $this->parameterBag->get('paypal_payment_details_prod_url');
-            $this->capture_payment_order_url = $this->parameterBag->get('paypal_capture_order_payment_url');
+            $this->capture_payment_order_url = $this->parameterBag->get('paypal_capture_order_payment_prod_url');
             $this->clientId = $this->parameterBag->get('paypal_prod_client_id');
             $this->clientSecret = $this->parameterBag->get('paypal_prod_secretKey');
         }
@@ -80,12 +82,13 @@ class PaypalHandler
 
                 $data = $response->toArray();
                 $token = $data['access_token'];
-
+                $this->logger->info(" Token:  " . $token);
                 return $token;
             } else {
                 return null;
             }
         } catch (\Throwable $th) {
+            $this->logger->error(" Erreur getToken:  " . $th);
             return;
         }
     }
@@ -110,6 +113,8 @@ class PaypalHandler
                 'Authorization' => 'Bearer ' . $this->getPaypalToken()
             ]
         ]);
+
+        $this->logger->info("Capture payment response: " . $response);
 
         // return $response->getStatusCode() == 201;
     }

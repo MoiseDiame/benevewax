@@ -19,6 +19,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TelephoneField;
 
 class OrderCrudController extends AbstractCrudController
 {
@@ -50,6 +51,7 @@ class OrderCrudController extends AbstractCrudController
             CollectionField::new('orderDetails', 'Détails de la commande')
                 ->hideWhenUpdating(),
             TextField::new('address', 'Adresse de livraison'),
+            TelephoneField::new('telephone', 'Téléphone'),
             MoneyField::new('productsPrice', 'Montant des achats')
                 ->setCurrency('EUR')
                 ->hideWhenUpdating(),
