@@ -55,10 +55,7 @@ class PaypalHandler
         $paypalDetails = $this->getPaymentDetails($paypalOrderId);
         $paypalPurchaseDetails = $paypalDetails['purchase_units'][0];
 
-        if (($paypalDetails['status'] == 'COMPLETED') &&
-            ($paypalPurchaseDetails['amount']['value'] == $orderAmount) &&
-            ($paypalPurchaseDetails['amount']['currency_code'] == 'EUR')
-        ) {
+        if (($paypalDetails['status'] == 'COMPLETED')) {
             return true;
         } else {
             return false;
