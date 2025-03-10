@@ -27,8 +27,7 @@ class OrderController extends AbstractController
     public function __construct(
         private EntityManagerInterface $entityManager,
         private CartManager $cartManager
-    ) {
-    }
+    ) {}
 
     #[Route('/order', name: 'app_order', methods: ['POST'])]
     public function index(Request $request, CartManager $cartManager, OrderManager $orderManager, ParameterBagInterface $parameterBag): Response
@@ -93,7 +92,7 @@ class OrderController extends AbstractController
             return new JsonResponse($urlGenerator->generate('app_order_success', ['orderRef' => $order->getReference()], UrlGenerator::ABSOLUTE_URL));
         } else {
 
-            $order->setStatus(OrderStatusEnum::FRAUDE);
+            $order->setStatus(OrderStatusEnum::LITIGE);
             $this->entityManager->persist($order);
             $this->entityManager->flush();
 

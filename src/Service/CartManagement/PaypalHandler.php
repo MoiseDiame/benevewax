@@ -50,12 +50,10 @@ class PaypalHandler
     public function handlePaypalPayment($paypalOrderId, $order): bool
     {
 
-        $orderAmount = $order->getTotalToPay() / 100;
-        $this->capturePaymentFromOrder($paypalOrderId);
-        $paypalDetails = $this->getPaymentDetails($paypalOrderId);
-        $paypalPurchaseDetails = $paypalDetails['purchase_units'][0];
+        // $orderAmount = $order->getTotalToPay() / 100;
+        $captureResponse = $this->capturePaymentFromOrder($paypalOrderId);
 
-        if (($paypalDetails['status'] == 'COMPLETED')) {
+        if (($captureResponse['status'] == 'COMPLETED')) {
             return true;
         } else {
             return false;
@@ -102,7 +100,7 @@ class PaypalHandler
         return $response->toArray();
     }
 
-    public function capturePaymentFromOrder($paymentId): void
+    public function capturePaymentFromOrder($paymentId)
     {
         $response = $this->httpClient->request('POST', $this->capture_payment_order_url . $paymentId . '/capture', [
             'headers' => [
@@ -111,8 +109,7 @@ class PaypalHandler
             ]
         ]);
 
-        // $this->logger->info("Capture payment response: " . $response);
 
-        // return $response->getStatusCode() == 201;
+        return $response->toArray();
     }
 }
