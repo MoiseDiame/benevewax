@@ -20,8 +20,7 @@ class OrderManager
     public function __construct(
         private CartManager $cartManager,
         private EntityManagerInterface $entityManager
-    ) {
-    }
+    ) {}
     public function createOrder($data)
     {
 
@@ -38,7 +37,7 @@ class OrderManager
         $order->setCreatedAt(new DateTimeImmutable('now'));
         $order->setCustomer($data['prenom'] . ' ' . $data['nom']);
         $order->setEmail($data['email']);
-        $order->setAddress($data['adresse'] . ' ' . $data['ville'] . ' ' . $data['codePostal'] . ' ' . $data['pays']);
+        $order->setAddress($data['adresse'] . ' ' . $data['codePostal'] . ' ' . $data['ville'] . ' ' . $data['pays']);
         $order->setTelephone($data['telephone']);
         $order->setShippingFees($shippingFees);
         $order->setTotalToPay($totalToPay);
